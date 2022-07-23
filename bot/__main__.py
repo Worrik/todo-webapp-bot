@@ -18,9 +18,11 @@ def main() -> None:
     async_session = sessionmaker(
         engine, expire_on_commit=False, class_=AsyncSession
     )
-    dp.message.middleware(DBMiddleware(async_session))
-    dp.message.middleware(UserMiddleware())
-    group.router.message.middleware(GroupMiddleware())
+
+    dp.message.outer_middleware(DBMiddleware(async_session))
+    dp.message.outer_middleware(UserMiddleware())
+    group.router.message.outer_middleware(GroupMiddleware())
+
     dp.include_router(group.router)
 
     logger.info("Start")

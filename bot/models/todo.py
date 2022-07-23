@@ -1,4 +1,5 @@
 from bot.models.base import Base, TimestampMixin
+from sqlalchemy.orm import relationship
 
 import sqlalchemy as sa
 
@@ -10,7 +11,16 @@ class Todo(TimestampMixin, Base):
     __tablename__ = "todos"
 
     creator_id = sa.Column(sa.ForeignKey("users.id", onupdate="cascade"))
+    creator = relationship("User", back_populates="created_todos")
+
     group_id = sa.Column(sa.ForeignKey("groups.id", onupdate="cascade"))
+    group = relationship("Group", back_populates="todos")
+
+    users = relationship(
+        "User", secondary="performers", back_populates="todos", lazy=False
+    )
+    tags = relationship("Tag", back_populates="todo", lazy=False)
+
     text = sa.Column(sa.Text)
     message_id = sa.Column(sa.BigInteger, nullable=False)
 
@@ -32,4 +42,5 @@ class Tag(TimestampMixin, Base):
     __tablename__ = "tags"
 
     todo_id = sa.Column(sa.ForeignKey("todos.id", onupdate="cascade"))
-    name_id = sa.Column(sa.String(50))
+    todo = relationship("Todo", back_populates="tags")
+    name = sa.Column(sa.String(50))

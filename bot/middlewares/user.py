@@ -28,31 +28,31 @@ class UserMiddleware(BaseMiddleware):
                 res = await session.execute(q)
                 user = res.scalar()
 
-            if user:
-                q = sa.update(User).where(User.username == user.username)
-                q = q.values(
-                    id=event.from_user.id,
-                    first_name=event.from_user.first_name,
-                    last_name=event.from_user.last_name,
-                    is_bot=event.from_user.is_bot,
-                    username=event.from_user.username,
-                    language_code=event.from_user.language_code,
-                )
-                await session.execute(q)
-                user = await session.get(User, event.from_user.id)
+                if user:
+                    q = sa.update(User).where(User.username == user.username)
+                    q = q.values(
+                        id=event.from_user.id,
+                        first_name=event.from_user.first_name,
+                        last_name=event.from_user.last_name,
+                        is_bot=event.from_user.is_bot,
+                        username=event.from_user.username,
+                        language_code=event.from_user.language_code,
+                    )
+                    await session.execute(q)
+                    user = await session.get(User, event.from_user.id)
 
-            else:
-                user = User(
-                    id=event.from_user.id,
-                    first_name=event.from_user.first_name,
-                    last_name=event.from_user.last_name,
-                    is_bot=event.from_user.is_bot,
-                    username=event.from_user.username,
-                    language_code=event.from_user.language_code,
-                )
+                else:
+                    user = User(
+                        id=event.from_user.id,
+                        first_name=event.from_user.first_name,
+                        last_name=event.from_user.last_name,
+                        is_bot=event.from_user.is_bot,
+                        username=event.from_user.username,
+                        language_code=event.from_user.language_code,
+                    )
 
-                session.add(user)
-                await session.commit()
+                    session.add(user)
+                    await session.commit()
 
             data["user"] = user
         return await handler(event, data)

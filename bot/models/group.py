@@ -1,4 +1,5 @@
 from bot.models.base import Base, TimestampMixin
+from sqlalchemy.orm import relationship
 
 import sqlalchemy as sa
 
@@ -15,6 +16,8 @@ class Group(TimestampMixin, Base):
     username = sa.Column(sa.String(100))
     description = sa.Column(sa.String(250))
     invite_link = sa.Column(sa.String(250))
+
+    todos = relationship("Todo", back_populates="group")
 
 
 class GroupUser(Base):

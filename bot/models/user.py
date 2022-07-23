@@ -1,4 +1,5 @@
 from bot.models.base import Base, TimestampMixin
+from sqlalchemy.orm import relationship
 
 import sqlalchemy as sa
 
@@ -16,3 +17,8 @@ class User(TimestampMixin, Base):
     last_name = sa.Column(sa.String(100))
     username = sa.Column(sa.String(100), unique=True)
     language_code = sa.Column(sa.String(2))
+
+    todos = relationship(
+        "Todo", secondary="performers", back_populates="users"
+    )
+    created_todos = relationship("Todo", back_populates="creator")
