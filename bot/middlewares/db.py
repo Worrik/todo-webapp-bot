@@ -16,5 +16,4 @@ class DBMiddleware(BaseMiddleware):
     ) -> Any:
         async with self.sessionmaker() as session:
             data['session'] = session
-            await handler(event, data)
-            await session.commit()
+            return await handler(event, data)

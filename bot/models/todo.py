@@ -9,8 +9,8 @@ class Todo(TimestampMixin, Base):
 
     __tablename__ = "todos"
 
-    creator_id = sa.Column(sa.ForeignKey("users.id"))
-    group_id = sa.Column(sa.ForeignKey("groups.id"))
+    creator_id = sa.Column(sa.ForeignKey("users.id", onupdate="cascade"))
+    group_id = sa.Column(sa.ForeignKey("groups.id", onupdate="cascade"))
     text = sa.Column(sa.Text)
     message_id = sa.Column(sa.BigInteger, nullable=False)
 
@@ -21,8 +21,8 @@ class Performer(TimestampMixin, Base):
 
     __tablename__ = "performers"
 
-    todo_id = sa.Column(sa.ForeignKey("todos.id"))
-    user_id = sa.Column(sa.ForeignKey("users.id"))
+    todo_id = sa.Column(sa.ForeignKey("todos.id", onupdate="cascade"))
+    user_id = sa.Column(sa.ForeignKey("users.id", onupdate="cascade"))
 
 
 class Tag(TimestampMixin, Base):
@@ -31,5 +31,5 @@ class Tag(TimestampMixin, Base):
 
     __tablename__ = "tags"
 
-    todo_id = sa.Column(sa.ForeignKey("todos.id"))
+    todo_id = sa.Column(sa.ForeignKey("todos.id", onupdate="cascade"))
     name_id = sa.Column(sa.String(50))

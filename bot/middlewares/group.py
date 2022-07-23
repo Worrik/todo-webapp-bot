@@ -3,7 +3,8 @@ from aiogram import BaseMiddleware
 from aiogram.types import Message
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from bot.models.group import Group
+from bot.models.group import Group, GroupUser
+from bot.models.user import User
 
 
 class GroupMiddleware(BaseMiddleware):
@@ -20,7 +21,17 @@ class GroupMiddleware(BaseMiddleware):
             group = Group(**event.chat.dict())
 
             session.add(group)
-            await session.commit()
+
+        user: User = data["user"]
+
+        group_user = await session.get(GroupUser, (user.id, group.id))
+
+        if not group_user:
+            group_user = GroupUser(user_id=user.id, group_id=group.id)
+            session.add(group_user)
+
+        await session.commit()
 
         data["group"] = group
+        data["group_user"] = group_user
         return await handler(event, data)

@@ -6,9 +6,9 @@ class BaseModel:
     id = sa.Column(sa.Integer, primary_key=True)
 
 
-class TimestampMixin:
+class TimestampMixin(BaseModel):
     created_at = sa.Column(sa.DateTime, server_default=sa.func.now())
 
 
-Base = declarative_base(cls=BaseModel)
+Base = declarative_base()
 metadata = Base.metadata

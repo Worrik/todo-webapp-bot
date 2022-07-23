@@ -14,5 +14,5 @@ class User(TimestampMixin, Base):
     is_bot = sa.Column(sa.Boolean)
     first_name = sa.Column(sa.String(100))
     last_name = sa.Column(sa.String(100))
-    username = sa.Column(sa.String(100))
+    username = sa.Column(sa.String(100), unique=True)
     language_code = sa.Column(sa.String(2))

@@ -15,3 +15,19 @@ class Group(TimestampMixin, Base):
     username = sa.Column(sa.String(100))
     description = sa.Column(sa.String(250))
     invite_link = sa.Column(sa.String(250))
+
+
+class GroupUser(Base):
+    def __init__(self, **entries):
+        self.__dict__.update(entries)
+
+    __tablename__ = "group_users"
+
+    user_id = sa.Column(
+        sa.ForeignKey("users.id", onupdate="cascade"), primary_key=True
+    )
+    group_id = sa.Column(
+        sa.ForeignKey("groups.id", onupdate="cascade"), primary_key=True
+    )
+
+    __table_args__ = (sa.UniqueConstraint("user_id", "group_id"),)

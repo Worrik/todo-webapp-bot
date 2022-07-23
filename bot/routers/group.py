@@ -40,5 +40,11 @@ async def create_todo(
     session.add(todo)
     session.add_all([Tag(name=tag, todo_id=todo.id) for tag in tags])
     session.add_all(
-        [Performer(user_id=user, todo_id=todo.id) for user in users]
+        [Performer(user_id=user.id, todo_id=todo.id) for user in users]
     )
+    await session.commit()
+
+
+@router.message()
+async def echo(_: Message):
+    pass
