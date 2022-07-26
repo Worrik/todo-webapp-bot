@@ -10,6 +10,8 @@ class Todo(TimestampMixin, Base):
 
     __tablename__ = "todos"
 
+    id = sa.Column(sa.BigInteger, nullable=False, primary_key=True)
+
     creator_id = sa.Column(sa.ForeignKey("users.id", onupdate="cascade"))
     creator = relationship("User", back_populates="created_todos")
 
@@ -22,7 +24,6 @@ class Todo(TimestampMixin, Base):
     tags = relationship("Tag", back_populates="todo", lazy=False)
 
     text = sa.Column(sa.Text)
-    message_id = sa.Column(sa.BigInteger, nullable=False)
 
 
 class Performer(TimestampMixin, Base):
@@ -31,8 +32,13 @@ class Performer(TimestampMixin, Base):
 
     __tablename__ = "performers"
 
-    todo_id = sa.Column(sa.ForeignKey("todos.id", onupdate="cascade"))
-    user_id = sa.Column(sa.ForeignKey("users.id", onupdate="cascade"))
+    todo_id = sa.Column(
+        sa.ForeignKey("todos.id", onupdate="cascade", ondelete="cascade")
+    )
+    user_id = sa.Column(
+        sa.ForeignKey("users.id", onupdate="cascade", ondelete="cascade")
+    )
+    __table_args__ = (sa.UniqueConstraint("todo_id", "user_id"),)
 
 
 class Tag(TimestampMixin, Base):
@@ -41,6 +47,10 @@ class Tag(TimestampMixin, Base):
 
     __tablename__ = "tags"
 
-    todo_id = sa.Column(sa.ForeignKey("todos.id", onupdate="cascade"))
+    todo_id = sa.Column(
+        sa.ForeignKey("todos.id", onupdate="cascade", ondelete="cascade")
+    )
     todo = relationship("Todo", back_populates="tags")
     name = sa.Column(sa.String(50))
+
+    __table_args__ = (sa.UniqueConstraint("todo_id", "name"),)

@@ -9,9 +9,10 @@ from bot.filters.reply_todo import TodoReplyFilter
 from bot.models.group import Group
 from bot.models.todo import Performer, Tag, Todo
 from bot.models.user import User
-from bot.utils.parse_todo import parse_todo
 
 import sqlalchemy as sa
+
+from bot.utils.parse_todo import parse_tags, parse_users
 
 
 router = Router(name="group router")
@@ -41,27 +42,70 @@ async def command_todos_list(
 async def create_todo(
     message: types.Message, session: AsyncSession, user: User, group: Group
 ) -> None:
-    text, tags, users = await parse_todo(message, session)
-    await message.answer(text)
+    todo_message = message.reply_to_message or message
+
+    text = todo_message.text or ""
+
+    if todo_message == message:
+        text = text[6:]
+
+    if not text:
+        await message.reply("Error: the message doesn't have text.")
+        return
 
     todo = Todo(
+        id=todo_message.message_id,
         creator_id=user.id,
         text=text,
-        message_id=message.message_id,
         group_id=group.id,
     )
     session.add(todo)
     await session.commit()
-    session.add_all([Tag(name=tag, todo_id=todo.id) for tag in tags])
+
+    await message.reply(
+        "Successfully create a todo.\n"
+        "Now you can add <code>!users</code> or <code>!tags</code>"
+        " by replying to a todo message.",
+    )
+
+
+@router.message(
+    Command(commands=["user", "users"], commands_prefix="!"), TodoReplyFilter()
+)
+async def add_users(message: Message, session: AsyncSession):
+    todo_message = message.reply_to_message
+
+    if not todo_message:
+        return
+
+    todo = await session.get(Todo, todo_message.message_id)
+    users = [
+        user
+        for user in await parse_users(message, session)
+        if user not in todo.users
+    ]
     session.add_all(
-        [Performer(user_id=user.id, todo_id=todo.id) for user in users]
+        [Performer(todo_id=todo.id, user_id=user.id) for user in users]
     )
     await session.commit()
+    await message.reply(f"Added {len(users)} user(s)")
 
 
-@router.message(TodoReplyFilter())
-async def test(message: Message):
-    await message.answer("here")
+@router.message(
+    Command(commands=["tag", "tags"], commands_prefix="!"), TodoReplyFilter()
+)
+async def add_tags(message: Message, session: AsyncSession):
+    todo_message = message.reply_to_message
+
+    if not todo_message:
+        return
+
+    todo = await session.get(Todo, todo_message.message_id)
+    tags = [tag.name for tag in todo.tags]
+    new_tags = [tag for tag in await parse_tags(message) if tag not in tags]
+    session.add_all([Tag(todo_id=todo.id, name=tag) for tag in new_tags])
+    await session.commit()
+    await message.reply(f"Added {len(new_tags)} tag(s)")
 
 
 @router.message()

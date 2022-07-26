@@ -13,7 +13,7 @@ dp = Dispatcher()
 
 
 def main() -> None:
-    bot = Bot(TOKEN, parse_mode="HTML")
+    bot = Bot(TOKEN, parse_mode="html")
     engine = create_async_engine(DATABASE_URL, echo=True)
     async_session = sessionmaker(
         engine, expire_on_commit=False, class_=AsyncSession
