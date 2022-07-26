@@ -1,10 +1,14 @@
+from aiogram.client.bot import Bot
 from aiogram.dispatcher.router import Router
 from aiogram.dispatcher.filters import Command
 from aiogram import types
 from aiogram.types import Message
+from aiogram.utils.chat_action import ChatActionSender
+from aiogram.utils.i18n import gettext as _
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from bot.filters.chat_type import GroupFilter
+from bot.filters.is_todo import IsTodoFilter
 from bot.filters.reply_todo import TodoReplyFilter
 from bot.models.group import Group
 from bot.models.todo import Performer, Tag, Todo
@@ -17,15 +21,25 @@ from bot.utils.parse_todo import parse_tags, parse_users
 
 router = Router(name="group router")
 router.message.bind_filter(GroupFilter)
+router.edited_message.bind_filter(GroupFilter)
 
 
 @router.message(commands=["start"])
 async def command_start_handler(message: Message) -> None:
     link_button = types.InlineKeyboardButton(
-        text="Test", url="https://t.me/todo_webapp_bot"
+        text=_("Chat with bot"), url="https://t.me/todo_webapp_bot"
     )
     keyboard = types.InlineKeyboardMarkup(inline_keyboard=[[link_button]])
-    await message.answer("Test", reply_markup=keyboard)
+    await message.answer(
+        _(
+            "Commands:\n"
+            "<code>!todo</code> - create a todo.\n"
+            "<code>!user</code> or <code>!users</code> - add user(s).\n"
+            "<code>!tag</code> or <code>!tags</code> - add tag(s).\n"
+            "<code>!del</code> or <code>!delete</code> - delete a todo."
+        ),
+        reply_markup=keyboard,
+    )
 
 
 @router.message(commands=["todos_list"])
@@ -40,72 +54,113 @@ async def command_todos_list(
 
 @router.message(Command(commands=["todo"], commands_prefix="!"))
 async def create_todo(
-    message: types.Message, session: AsyncSession, user: User, group: Group
+    message: types.Message,
+    session: AsyncSession,
+    user: User,
+    group: Group,
+    bot: Bot,
 ) -> None:
-    todo_message = message.reply_to_message or message
+    async with ChatActionSender.typing(bot=bot, chat_id=message.chat.id):
+        todo_message = message.reply_to_message or message
 
-    text = todo_message.text or ""
+        text = todo_message.text or ""
 
-    if todo_message == message:
-        text = text[6:]
+        if todo_message == message:
+            text = text[6:]
 
-    if not text:
-        await message.reply("Error: the message doesn't have text.")
-        return
+        if not text:
+            await message.reply(_("Error: the message doesn't have text."))
+            return
 
-    todo = Todo(
-        id=todo_message.message_id,
-        creator_id=user.id,
-        text=text,
-        group_id=group.id,
-    )
-    session.add(todo)
-    await session.commit()
+        todo = Todo(
+            id=todo_message.message_id,
+            creator_id=user.id,
+            text=text,
+            group_id=group.id,
+        )
+        session.add(todo)
+        await session.commit()
 
-    await message.reply(
-        "Successfully create a todo.\n"
-        "Now you can add <code>!users</code> or <code>!tags</code>"
-        " by replying to a todo message.",
-    )
+        await message.reply(
+            _(
+                "Successfully create a todo.\n"
+                "Now you can add <code>!users</code> or <code>!tags</code>"
+                " by replying to a todo message.",
+            )
+        )
 
 
 @router.message(
     Command(commands=["user", "users"], commands_prefix="!"), TodoReplyFilter()
 )
-async def add_users(message: Message, session: AsyncSession):
-    todo_message = message.reply_to_message
+async def add_users(message: Message, session: AsyncSession, bot: Bot):
+    async with ChatActionSender.typing(bot=bot, chat_id=message.chat.id):
+        todo_message = message.reply_to_message
 
-    if not todo_message:
-        return
+        if not todo_message:
+            return
 
-    todo = await session.get(Todo, todo_message.message_id)
-    users = [
-        user
-        for user in await parse_users(message, session)
-        if user not in todo.users
-    ]
-    session.add_all(
-        [Performer(todo_id=todo.id, user_id=user.id) for user in users]
-    )
-    await session.commit()
-    await message.reply(f"Added {len(users)} user(s)")
+        todo = await session.get(Todo, todo_message.message_id)
+        users = [
+            user
+            for user in await parse_users(message, session)
+            if user not in todo.users
+        ]
+        session.add_all(
+            [Performer(todo_id=todo.id, user_id=user.id) for user in users]
+        )
+        await session.commit()
+        await message.reply(
+            _("Added {users_count} user(s)").format(users_count=len(users))
+        )
 
 
 @router.message(
     Command(commands=["tag", "tags"], commands_prefix="!"), TodoReplyFilter()
 )
-async def add_tags(message: Message, session: AsyncSession):
-    todo_message = message.reply_to_message
+async def add_tags(message: Message, session: AsyncSession, bot: Bot):
+    async with ChatActionSender.typing(bot=bot, chat_id=message.chat.id):
+        todo_message = message.reply_to_message
 
-    if not todo_message:
-        return
+        if not todo_message:
+            return
 
-    todo = await session.get(Todo, todo_message.message_id)
-    tags = [tag.name for tag in todo.tags]
-    new_tags = [tag for tag in await parse_tags(message) if tag not in tags]
-    session.add_all([Tag(todo_id=todo.id, name=tag) for tag in new_tags])
+        todo = await session.get(Todo, todo_message.message_id)
+        tags = [tag.name for tag in todo.tags]
+        new_tags = [
+            tag for tag in await parse_tags(message) if tag not in tags
+        ]
+        session.add_all([Tag(todo_id=todo.id, name=tag) for tag in new_tags])
+        await session.commit()
+        await message.reply(
+            _("Added {tags_count} tag(s)").format(tags_count=len(new_tags))
+        )
+
+
+@router.message(
+    Command(commands=["del", "delete"], commands_prefix="!"), TodoReplyFilter()
+)
+async def delete_todo(message: Message, session: AsyncSession, bot: Bot):
+    async with ChatActionSender.typing(bot=bot, chat_id=message.chat.id):
+        if not message.reply_to_message:
+            return
+        todo = await session.get(Todo, message.reply_to_message.message_id)
+        await session.delete(todo)
+        await message.reply(_("Successfully deleted this todo"))
+
+
+@router.edited_message(IsTodoFilter())
+async def edit_todo(edited_message: Message, session: AsyncSession):
+    text = edited_message.text or ""
+    if text.startswith("!todo"):
+        text = text[6:]
+    q = (
+        sa.update(Todo)
+        .where(Todo.id == edited_message.message_id)
+        .values(text=text)
+    )
+    await session.execute(q)
     await session.commit()
-    await message.reply(f"Added {len(new_tags)} tag(s)")
 
 
 @router.message()

@@ -18,6 +18,8 @@ class User(TimestampMixin, Base):
     username = sa.Column(sa.String(100), unique=True)
     language_code = sa.Column(sa.String(2))
 
+    verified = sa.Column(sa.Boolean)
+
     todos = relationship(
         "Todo", secondary="performers", back_populates="users"
     )

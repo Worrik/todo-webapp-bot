@@ -9,6 +9,15 @@ import sqlalchemy as sa
 
 
 class UserMiddleware(BaseMiddleware):
+    async def update_user(
+        self, session: AsyncSession, data: dict, user_id: int
+    ) -> User:
+        q = sa.update(User).where(User.id == user_id)
+        q = q.values(**data)
+        await session.execute(q)
+        user = await session.get(User, user_id)
+        return user
+
     async def __call__(
         self,
         handler: Callable[[Message, Dict[str, Any]], Awaitable[Any]],
@@ -29,17 +38,18 @@ class UserMiddleware(BaseMiddleware):
                 user = res.scalar()
 
                 if user:
-                    q = sa.update(User).where(User.username == user.username)
-                    q = q.values(
-                        id=event.from_user.id,
-                        first_name=event.from_user.first_name,
-                        last_name=event.from_user.last_name,
-                        is_bot=event.from_user.is_bot,
-                        username=event.from_user.username,
-                        language_code=event.from_user.language_code,
+                    user = await self.update_user(
+                        session,
+                        dict(
+                            id=event.from_user.id,
+                            first_name=event.from_user.first_name,
+                            last_name=event.from_user.last_name,
+                            is_bot=event.from_user.is_bot,
+                            username=event.from_user.username,
+                            language_code=event.from_user.language_code,
+                        ),
+                        user.id,
                     )
-                    await session.execute(q)
-                    user = await session.get(User, event.from_user.id)
 
                 else:
                     user = User(
@@ -52,7 +62,19 @@ class UserMiddleware(BaseMiddleware):
                     )
 
                     session.add(user)
-                    await session.commit()
+            await session.commit()
+
+            if any(
+                (
+                    user.id != event.from_user.id,
+                    user.first_name != event.from_user.first_name,
+                    user.last_name != event.from_user.last_name,
+                    user.is_bot != event.from_user.is_bot,
+                    user.username != event.from_user.username,
+                    user.language_code != event.from_user.language_code,
+                )
+            ):
+                pass
 
             data["user"] = user
         return await handler(event, data)

@@ -4,9 +4,7 @@ from sqlalchemy.ext.asyncio.session import AsyncSession
 from bot.models.todo import Todo
 
 
-class TodoReplyFilter(BaseFilter):
+class IsTodoFilter(BaseFilter):
     async def __call__(self, message: Message, session: AsyncSession) -> bool:
-        if message.reply_to_message:
-            todo = await session.get(Todo, message.reply_to_message.message_id)
-            return bool(todo)
-        return False
+        todo = await session.get(Todo, message.message_id)
+        return bool(todo)
