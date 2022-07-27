@@ -1,9 +1,7 @@
-from . import config, filters, middlewares, models, routers
+from . import filters, middlewares, routers
 
 __all__ = [
-    "config",
     "filters",
     "middlewares",
-    "models",
     "routers",
 ]

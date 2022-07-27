@@ -3,7 +3,7 @@ from aiogram import BaseMiddleware
 from aiogram.types import Message
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from bot.models.user import User
+from models.user import User
 
 import sqlalchemy as sa
 

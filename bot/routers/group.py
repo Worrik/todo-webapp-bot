@@ -10,9 +10,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from bot.filters.chat_type import GroupFilter
 from bot.filters.is_todo import IsTodoFilter
 from bot.filters.reply_todo import TodoReplyFilter
-from bot.models.group import Group
-from bot.models.todo import Performer, Tag, Todo
-from bot.models.user import User
+from models.group import Group
+from models.todo import Performer, Tag, Todo
+from models.user import User
 
 import sqlalchemy as sa
 

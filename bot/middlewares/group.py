@@ -3,8 +3,8 @@ from aiogram import BaseMiddleware
 from aiogram.types import Message
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from bot.models.group import Group, GroupUser
-from bot.models.user import User
+from models.group import Group, GroupUser
+from models.user import User
 
 
 class GroupMiddleware(BaseMiddleware):

@@ -1,4 +1,4 @@
-from bot.models.base import Base, TimestampMixin
+from models.base import Base, TimestampMixin
 from sqlalchemy.orm import relationship
 
 import sqlalchemy as sa

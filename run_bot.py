@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
 
 from bot.middlewares.db import DBMiddleware
-from bot.config import DATABASE_URL, TOKEN, logger
+from config import DATABASE_URL, TOKEN
 from bot.middlewares.group import GroupMiddleware
 from bot.middlewares.user import UserMiddleware
 from bot.routers import group, user
@@ -39,9 +39,7 @@ def main() -> None:
     dp.include_router(group.router)
     dp.include_router(user.router)
 
-    logger.info("Start")
     dp.run_polling(bot)
-    logger.info("Stop")
 
 
 if __name__ == "__main__":

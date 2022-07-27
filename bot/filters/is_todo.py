@@ -1,7 +1,7 @@
 from aiogram.dispatcher.filters.base import BaseFilter
 from aiogram.types.message import Message
 from sqlalchemy.ext.asyncio.session import AsyncSession
-from bot.models.todo import Todo
+from models.todo import Todo
 
 
 class IsTodoFilter(BaseFilter):

@@ -6,7 +6,7 @@ from aiogram.utils.i18n import gettext as _
 from sqlalchemy.ext.asyncio.session import AsyncSession
 
 from bot.filters.chat_type import PrivateFilter
-from bot.models.user import User
+from models.user import User
 
 import sqlalchemy as sa
 

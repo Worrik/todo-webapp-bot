@@ -8,7 +8,7 @@ from sqlalchemy.ext.asyncio.session import AsyncSession
 
 import sqlalchemy as sa
 
-from bot.models.user import User
+from models.user import User
 
 
 def get_entities_dict(message: Message) -> Dict[str, List[MessageEntity]]:
