@@ -34,7 +34,7 @@ def main() -> None:
         observer.middleware(i18n_middleware)
 
         router_observer = getattr(group.router, event)
-        router_observer.outer_middleware(group_middleware)
+        router_observer.middleware(group_middleware)
 
     dp.include_router(group.router)
     dp.include_router(user.router)

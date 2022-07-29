@@ -1,4 +1,4 @@
-from typing import Dict, List, Tuple
+from typing import Dict, List
 from itertools import chain, groupby
 from operator import attrgetter
 

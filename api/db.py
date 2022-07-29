@@ -10,4 +10,4 @@ async_session = sessionmaker(
 
 async def get_session() -> AsyncSession:
     async with async_session() as session:
-        return session
+        yield session
