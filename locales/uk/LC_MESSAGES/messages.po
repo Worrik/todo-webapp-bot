@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-26 20:13+0300\n"
+"POT-Creation-Date: 2022-08-02 17:21+0300\n"
 "PO-Revision-Date: 2022-07-26 19:01+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: uk\n"
@@ -41,7 +41,11 @@ msgstr ""
 msgid "Error: the message doesn't have text."
 msgstr "Помилка: у повідомлення немає тексту."
 
-#: bot/routers/group.py:85
+#: bot/routers/group.py:86
+msgid "Already created todo from this message"
+msgstr "Вже є створене todo з цим повідомленням"
+
+#: bot/routers/group.py:89
 msgid ""
 "Successfully create a todo.\n"
 "Now you can add <code>!users</code> or <code>!tags</code> by replying to "
@@ -51,29 +55,17 @@ msgstr ""
 "Тепер можна додати <code>!users</code> або <code>!tags</code> відповівши "
 "на todo повідомлення "
 
-#: bot/routers/group.py:114
+#: bot/routers/group.py:118
 msgid "Added {users_count} user(s)"
 msgstr "Додано {users_count} користувач(-ів)"
 
-#: bot/routers/group.py:136
+#: bot/routers/group.py:140
 msgid "Added {tags_count} tag(s)"
 msgstr "Додано {tags_count} тег(-ів)"
 
-#: bot/routers/group.py:149
+#: bot/routers/group.py:153
 msgid "Successfully deleted this todo"
 msgstr "Успішно видалено todo"
-
-#: bot/routers/user.py:24
-msgid "Героям слава!"
-msgstr ""
-
-#: bot/routers/user.py:28
-msgid "Слава Україні!"
-msgstr ""
-
-#: bot/routers/user.py:39
-msgid "Welcome"
-msgstr ""
 
 #~ msgid "Added {tags_count} tag(s)"
 #~ msgstr "Додано {tags_count} тегів"
@@ -89,4 +81,13 @@ msgstr ""
 #~ "`!user` or `!users` - додати юзера(-ів).\n"
 #~ "`!tag` or `!tags` - додати тег(и).\n"
 #~ "`!del` or `!delete` - видалити todo"
+
+#~ msgid "Героям слава!"
+#~ msgstr ""
+
+#~ msgid "Слава Україні!"
+#~ msgstr ""
+
+#~ msgid "Welcome"
+#~ msgstr ""
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-26 20:13+0300\n"
+"POT-Creation-Date: 2022-08-02 17:21+0300\n"
 "PO-Revision-Date: 2022-07-26 19:01+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -35,35 +35,27 @@ msgstr ""
 msgid "Error: the message doesn't have text."
 msgstr ""
 
-#: bot/routers/group.py:85
+#: bot/routers/group.py:86
+msgid "Already created todo from this message"
+msgstr ""
+
+#: bot/routers/group.py:89
 msgid ""
 "Successfully create a todo.\n"
 "Now you can add <code>!users</code> or <code>!tags</code> by replying to "
 "a todo message."
 msgstr ""
 
-#: bot/routers/group.py:114
+#: bot/routers/group.py:118
 msgid "Added {users_count} user(s)"
 msgstr ""
 
-#: bot/routers/group.py:136
+#: bot/routers/group.py:140
 msgid "Added {tags_count} tag(s)"
 msgstr ""
 
-#: bot/routers/group.py:149
+#: bot/routers/group.py:153
 msgid "Successfully deleted this todo"
-msgstr ""
-
-#: bot/routers/user.py:24
-msgid "Героям слава!"
-msgstr ""
-
-#: bot/routers/user.py:28
-msgid "Слава Україні!"
-msgstr ""
-
-#: bot/routers/user.py:39
-msgid "Welcome"
 msgstr ""
 
 #~ msgid ""
@@ -83,5 +75,14 @@ msgstr ""
 #~ "<code>!user</code> or <code>!users</code> - add user(s).\n"
 #~ "<code>!tag</code> or <code>!tags</code> - add tag(s).\n"
 #~ "<code>!del</code> or <code>!delete</code> - delete a todo"
+#~ msgstr ""
+
+#~ msgid "Героям слава!"
+#~ msgstr ""
+
+#~ msgid "Слава Україні!"
+#~ msgstr ""
+
+#~ msgid "Welcome"
 #~ msgstr ""
 

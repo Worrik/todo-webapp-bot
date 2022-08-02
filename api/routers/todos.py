@@ -2,12 +2,11 @@ from fastapi import APIRouter
 from fastapi.params import Depends
 from sqlalchemy.ext.asyncio.session import AsyncSession
 
-from api.db import get_session
-from models import Todo
-from models.pydantic_models import TodoPydantic
-from models.todo import Performer
-
 import sqlalchemy as sa
+
+from db import get_session
+from ...models import Todo, Performer
+from ...models.pydantic_models import TodoPydantic
 
 
 router = APIRouter(prefix="/todos")

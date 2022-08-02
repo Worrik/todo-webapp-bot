@@ -6,5 +6,5 @@ from models.todo import Todo
 
 class IsTodoFilter(BaseFilter):
     async def __call__(self, message: Message, session: AsyncSession) -> bool:
-        todo = await session.get(Todo, message.message_id)
+        todo = await session.get(Todo, (message.message_id, message.chat.id))
         return bool(todo)

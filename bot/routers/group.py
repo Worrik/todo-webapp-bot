@@ -24,7 +24,7 @@ router.message.bind_filter(GroupFilter)
 router.edited_message.bind_filter(GroupFilter)
 
 
-@router.message(commands=["start"])
+@router.message(commands=["start", "help"])
 async def command_start_handler(message: Message) -> None:
     link_button = types.InlineKeyboardButton(
         text=_("Chat with bot"), url="https://t.me/todo_webapp_bot"
@@ -79,15 +79,19 @@ async def create_todo(
             group_id=group.id,
         )
         session.add(todo)
-        await session.commit()
 
-        await message.reply(
-            _(
-                "Successfully create a todo.\n"
-                "Now you can add <code>!users</code> or <code>!tags</code>"
-                " by replying to a todo message.",
+        try:
+            await session.commit()
+        except sa.exc.IntegrityError:
+            await message.reply(_("Already created todo from this message"))
+        else:
+            await message.reply(
+                _(
+                    "Successfully create a todo.\n"
+                    "Now you can add <code>!users</code> or <code>!tags</code>"
+                    " by replying to a todo message.",
+                )
             )
-        )
 
 
 @router.message(
@@ -100,7 +104,9 @@ async def add_users(message: Message, session: AsyncSession, bot: Bot):
         if not todo_message:
             return
 
-        todo = await session.get(Todo, todo_message.message_id)
+        todo = await session.get(
+            Todo, (todo_message.message_id, todo_message.chat.id)
+        )
         users = [
             user
             for user in await parse_users(message, session)

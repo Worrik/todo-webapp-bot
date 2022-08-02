@@ -15,7 +15,9 @@ class Todo(TimestampMixin, Base):
     creator_id = sa.Column(sa.ForeignKey("users.id", onupdate="cascade"))
     creator = relationship("User", back_populates="created_todos")
 
-    group_id = sa.Column(sa.ForeignKey("groups.id", onupdate="cascade"))
+    group_id = sa.Column(
+        sa.ForeignKey("groups.id", onupdate="cascade"), primary_key=True
+    )
     group = relationship("Group", back_populates="todos")
 
     users = relationship(

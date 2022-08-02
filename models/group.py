@@ -16,6 +16,7 @@ class Group(TimestampMixin, Base):
     username = sa.Column(sa.String(100))
     description = sa.Column(sa.String(250))
     invite_link = sa.Column(sa.String(250))
+    photo = sa.Column(sa.String(500))
 
     todos = relationship("Todo", back_populates="group")
 
