@@ -27,7 +27,7 @@ class GroupMiddleware(BaseMiddleware):
         data: Dict[str, Any],
     ) -> Any:
         if event.chat.type not in ["group"]:
-            return
+            return await handler(event, data)
 
         bot: Bot = data["bot"]
         session: AsyncSession = data["session"]

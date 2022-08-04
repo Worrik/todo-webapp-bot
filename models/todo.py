@@ -22,16 +22,21 @@ class Todo(TimestampMixin, Base):
     )
     tags = relationship("Tag", back_populates="todo", lazy=False)
 
-    status_id = sa.Column(sa.ForeignKey("statuses.id", ondelete="set null"))
+    status_name = sa.Column(
+        sa.ForeignKey("statuses.name", ondelete="set null")
+    )
     status = relationship("Status", back_populates="todos", lazy=True)
 
     text = sa.Column(sa.Text)
 
 
-class Status(BaseModel, Base):
+class Status(Base):
     __tablename__ = "statuses"
 
-    name = sa.Column(sa.String(100), nullable=False)
+    name = sa.Column(
+        sa.String(100), primary_key=True, unique=True, nullable=False
+    )
+    todos = relationship("Todo", back_populates="status")
 
 
 class Performer(TimestampMixin, Base):

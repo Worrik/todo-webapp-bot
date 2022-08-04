@@ -20,6 +20,7 @@ class TodoPydantic(pydantic.BaseModel):
     users: List[types.User]
     tags: List[TagPydantic]
     text: str
+    status: Optional[str]
 
     class Config:
         orm_mode = True

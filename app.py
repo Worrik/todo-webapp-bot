@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from aiogram.utils.web_app import safe_parse_webapp_init_data
 
-from models import Todo, Performer, Group, User, GroupUser
+from models import Todo, Group, User, GroupUser
 from models.pydantic_models import GroupPydantic, TodoPydantic
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
@@ -24,6 +24,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/web", StaticFiles(directory="static/web", html=True), name="web")
 
 
 engine = create_async_engine(DATABASE_URL, echo=True)
@@ -61,18 +62,12 @@ async def todos(
     session: AsyncSession = Depends(get_session),
     user: User = Depends(get_telegram_user),
 ) -> List[TodoPydantic]:
-    q = (
-        sa.select(Todo)
-        .where(
-            sa.or_(Performer.user_id == user.id, Todo.creator_id == user.id)
-        )
-        .order_by(Todo.created_at.desc())
+    q = sa.select(Todo).order_by(Todo.created_at.desc())
+    q = q.where(Group.id == group_id)
+    q = q.where(
+        sa.and_(GroupUser.user_id == user.id, GroupUser.group_id == group_id)
     )
-
-    if group_id:
-        q = q.where(Group.id == group_id)
-
-    q = q.join(Performer, Performer.todo_id == Todo.id)
+    q = q.join(Group, Group.id == Todo.group_id)
 
     res = await session.execute(q)
     todos = res.unique().scalars()

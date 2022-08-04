@@ -34,8 +34,8 @@ def main() -> None:
         observer.middleware(i18n_middleware)
         observer.middleware(group_middleware)
 
-    dp.include_router(group.router)
     dp.include_router(user.router)
+    dp.include_router(group.router)
 
     dp.run_polling(bot)
 
