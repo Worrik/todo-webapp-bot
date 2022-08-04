@@ -131,12 +131,16 @@ async def add_tags(message: Message, session: AsyncSession, bot: Bot):
         if not todo_message:
             return
 
-        todo = await session.get(Todo, todo_message.message_id)
+        todo = await session.get(
+            Todo, (todo_message.message_id, todo_message.chat.id)
+        )
         tags = [tag.name for tag in todo.tags]
         new_tags = [
             tag for tag in await parse_tags(message) if tag not in tags
         ]
-        session.add_all([Tag(todo_id=todo.id, name=tag) for tag in new_tags])
+        session.add_all(
+            [Tag(todo_id=todo.id, name=tag) for tag in set(new_tags)]
+        )
         await session.commit()
         await message.reply(
             _("Added {tags_count} tag(s)").format(tags_count=len(new_tags))
@@ -148,10 +152,16 @@ async def add_tags(message: Message, session: AsyncSession, bot: Bot):
 )
 async def delete_todo(message: Message, session: AsyncSession, bot: Bot):
     async with ChatActionSender.typing(bot=bot, chat_id=message.chat.id):
-        if not message.reply_to_message:
+        todo_message = message.reply_to_message
+
+        if not todo_message:
             return
-        todo = await session.get(Todo, message.reply_to_message.message_id)
+
+        todo = await session.get(
+            Todo, (todo_message.message_id, todo_message.chat.id)
+        )
         await session.delete(todo)
+        await session.commit()
         await message.reply(_("Successfully deleted this todo"))
 
 
@@ -163,6 +173,7 @@ async def edit_todo(edited_message: Message, session: AsyncSession):
     q = (
         sa.update(Todo)
         .where(Todo.id == edited_message.message_id)
+        .where(Todo.group_id == edited_message.chat.id)
         .values(text=text)
     )
     await session.execute(q)
