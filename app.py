@@ -24,7 +24,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 app.mount("/static", StaticFiles(directory="static"), name="static")
-app.mount("/web", StaticFiles(directory="static/web", html=True), name="web")
+app.mount("/web", StaticFiles(directory="web", html=True), name="web")
 
 
 engine = create_async_engine(DATABASE_URL, echo=True)
