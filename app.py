@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from fastapi.params import Depends, Header
 from fastapi.exceptions import HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from aiogram.utils.web_app import safe_parse_webapp_init_data
 
 from models import Todo, Performer, Group, User, GroupUser
@@ -12,6 +13,17 @@ from sqlalchemy.orm import sessionmaker
 from config import DATABASE_URL, TOKEN
 
 import sqlalchemy as sa
+
+
+app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
 engine = create_async_engine(DATABASE_URL, echo=True)
@@ -29,23 +41,18 @@ async def get_telegram_user(
     session: AsyncSession = Depends(get_session),
     Authorization: str = Header(default=""),
 ) -> User:
-    data = safe_parse_webapp_init_data(token=TOKEN, init_data=Authorization)
+    try:
+        data = safe_parse_webapp_init_data(
+            token=TOKEN, init_data=Authorization
+        )
+    except ValueError:
+        raise HTTPException(400)
 
     if not data.user:
         raise HTTPException(400)
 
     user = await session.get(User, data.user.id)
     return user
-
-
-app = FastAPI()
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 
 @app.get("/todos")
@@ -91,7 +98,7 @@ async def get_groups(
         )
         .where(GroupUser.user_id == user.id)
         .group_by(Group.id)
-        .join(Todo, Todo.group_id == Group.id)
+        .outerjoin(Todo, Todo.group_id == Group.id)
         .join(GroupUser, GroupUser.group_id == Group.id)
     )
     res = await session.execute(q)

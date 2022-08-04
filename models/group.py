@@ -5,9 +5,6 @@ import sqlalchemy as sa
 
 
 class Group(TimestampMixin, Base):
-    def __init__(self, **entries):
-        self.__dict__.update(entries)
-
     __tablename__ = "groups"
 
     id = sa.Column(sa.BigInteger, primary_key=True)
@@ -22,9 +19,6 @@ class Group(TimestampMixin, Base):
 
 
 class GroupUser(Base):
-    def __init__(self, **entries):
-        self.__dict__.update(entries)
-
     __tablename__ = "group_users"
 
     user_id = sa.Column(

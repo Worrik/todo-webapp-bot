@@ -5,9 +5,6 @@ import sqlalchemy as sa
 
 
 class User(TimestampMixin, Base):
-    def __init__(self, **entries):
-        self.__dict__.update(entries)
-
     __tablename__ = "users"
 
     id = sa.Column(sa.BigInteger, primary_key=True)

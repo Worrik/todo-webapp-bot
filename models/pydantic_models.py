@@ -1,6 +1,6 @@
 from datetime import datetime
 from typing import List, Optional
-from aiogram import types
+from aiogram import types, Bot
 
 import pydantic
 

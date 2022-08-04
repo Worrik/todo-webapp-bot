@@ -1,5 +1,6 @@
 from typing import Callable, Dict, Any, Awaitable
 from aiogram import BaseMiddleware
+from aiogram.client.bot import Bot
 from aiogram.types import Message
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -25,12 +26,38 @@ class GroupMiddleware(BaseMiddleware):
         event: Message,
         data: Dict[str, Any],
     ) -> Any:
+        if event.chat.type not in ["group"]:
+            return
+
+        bot: Bot = data["bot"]
         session: AsyncSession = data["session"]
-        group = await session.get(Group, event.chat.id)
+        group: Group = await session.get(Group, event.chat.id)
 
         if not group:
-            group = Group(**event.chat.dict())
+            chat = await bot.get_chat(event.chat.id)
+            photo = None
+            if chat.photo:
+                file = await bot.get_file(chat.photo.big_file_id)
+                if file.file_path:
+                    await bot.download_file(
+                        file.file_path, f"static/{file.file_unique_id}"
+                    )
+                    photo = file.file_unique_id
+            group_data = chat.dict()
+            group_data["photo"] = photo
+            group = Group(**group_data)
             session.add(group)
+
+        elif event.new_chat_photo:
+            photo_size = event.new_chat_photo[-1]
+            file = await bot.get_file(photo_size.file_id)
+            if file.file_path:
+                await bot.download_file(
+                    file.file_path, f"static/{file.file_unique_id}"
+                )
+                group = await self.update_group(
+                    session, group.id, {"photo": file.file_unique_id}
+                )
 
         elif (
             group.type != event.chat.type

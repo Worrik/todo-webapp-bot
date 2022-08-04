@@ -3,6 +3,9 @@ import sqlalchemy as sa
 
 
 class BaseModel:
+    def __init__(self, **entries):
+        self.__dict__.update(entries)
+
     id = sa.Column(sa.Integer, primary_key=True)
 
 

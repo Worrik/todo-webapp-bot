@@ -1,13 +1,10 @@
-from models.base import Base, TimestampMixin
+from models.base import Base, BaseModel, TimestampMixin
 from sqlalchemy.orm import relationship
 
 import sqlalchemy as sa
 
 
 class Todo(TimestampMixin, Base):
-    def __init__(self, **entries):
-        self.__dict__.update(entries)
-
     __tablename__ = "todos"
 
     id = sa.Column(sa.BigInteger, nullable=False, primary_key=True)
@@ -25,13 +22,19 @@ class Todo(TimestampMixin, Base):
     )
     tags = relationship("Tag", back_populates="todo", lazy=False)
 
+    status_id = sa.Column(sa.ForeignKey("statuses.id", ondelete="set null"))
+    status = relationship("Status", back_populates="todos", lazy=True)
+
     text = sa.Column(sa.Text)
 
 
-class Performer(TimestampMixin, Base):
-    def __init__(self, **entries):
-        self.__dict__.update(entries)
+class Status(BaseModel, Base):
+    __tablename__ = "statuses"
 
+    name = sa.Column(sa.String(100), nullable=False)
+
+
+class Performer(TimestampMixin, Base):
     __tablename__ = "performers"
 
     todo_id = sa.Column(
@@ -44,9 +47,6 @@ class Performer(TimestampMixin, Base):
 
 
 class Tag(TimestampMixin, Base):
-    def __init__(self, **entries):
-        self.__dict__.update(entries)
-
     __tablename__ = "tags"
 
     todo_id = sa.Column(
