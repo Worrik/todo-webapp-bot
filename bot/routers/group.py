@@ -218,7 +218,9 @@ async def get_or_set_todo_status(
 
         if not message_status:
             await message.reply(
-                todo.status.name or _("Todo doesn't have the status.")
+                todo.status.name
+                if todo.status
+                else _("Todo doesn't have the status.")
             )
         else:
             q = sa.select(Status).where(Status.name.ilike(message_status))
