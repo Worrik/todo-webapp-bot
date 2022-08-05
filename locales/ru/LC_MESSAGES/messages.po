@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-08-05 13:03+0300\n"
+"POT-Creation-Date: 2022-08-05 13:49+0300\n"
 "PO-Revision-Date: 2022-07-26 19:01+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -32,35 +32,39 @@ msgid ""
 "<code>!del</code> or <code>!delete</code> - delete a todo."
 msgstr ""
 
-#: bot/routers/group.py:72 bot/routers/group.py:139
+#: bot/routers/group.py:62 bot/routers/group.py:129
 msgid "Error: the message doesn't have text."
 msgstr ""
 
-#: bot/routers/group.py:86 bot/routers/group.py:153
+#: bot/routers/group.py:76 bot/routers/group.py:143
 msgid "Already created todo from this message"
 msgstr ""
 
-#: bot/routers/group.py:89
+#: bot/routers/group.py:79
 msgid ""
 "Successfully create a todo.\n"
 "Now you can add <code>!users</code> or <code>!tags</code> by replying to "
 "a todo message."
 msgstr ""
 
-#: bot/routers/group.py:120
+#: bot/routers/group.py:110
 msgid "Added {users_count} user(s)"
 msgstr ""
 
-#: bot/routers/group.py:165
+#: bot/routers/group.py:151
 msgid "Successfully create a todo for {count_users} user(s)\n"
 msgstr ""
 
-#: bot/routers/group.py:193
+#: bot/routers/group.py:179
 msgid "Added {tags_count} tag(s)"
 msgstr ""
 
-#: bot/routers/group.py:212
+#: bot/routers/group.py:198
 msgid "Successfully deleted this todo"
+msgstr ""
+
+#: bot/routers/group.py:221
+msgid "Todo doesn't have the status."
 msgstr ""
 
 #~ msgid ""
