@@ -1,18 +1,24 @@
 from datetime import datetime
 from typing import List, Optional
-from aiogram import types, Bot
+from aiogram import types
 
 import pydantic
 
 
-class TagPydantic(pydantic.BaseModel):
-    name: str
-
+class OrmModel(pydantic.BaseModel):
     class Config:
         orm_mode = True
 
 
-class TodoPydantic(pydantic.BaseModel):
+class TagPydantic(OrmModel):
+    name: str
+
+
+class Status(OrmModel):
+    name: Optional[str]
+
+
+class TodoPydantic(OrmModel):
     id: int
     creator: types.User
     created_at: datetime
@@ -20,13 +26,10 @@ class TodoPydantic(pydantic.BaseModel):
     users: List[types.User]
     tags: List[TagPydantic]
     text: str
-    status: Optional[str]
-
-    class Config:
-        orm_mode = True
+    status: Optional[Status]
 
 
-class GroupPydantic(pydantic.BaseModel):
+class GroupPydantic(OrmModel):
     id: int
     type: Optional[str]
     title: Optional[str]
@@ -36,6 +39,3 @@ class GroupPydantic(pydantic.BaseModel):
     photo: Optional[str]
 
     todos_count: Optional[int]
-
-    class Config:
-        orm_mode = True
