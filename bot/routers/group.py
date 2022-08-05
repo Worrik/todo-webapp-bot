@@ -234,7 +234,9 @@ async def get_or_set_todo_status(
             session.add(todo)
             await session.commit()
             await message.reply(
-                _("Successfully set status: {status}").format(message_status)
+                _("Successfully set status: {status}").format(
+                    status=message_status
+                )
             )
 
 
