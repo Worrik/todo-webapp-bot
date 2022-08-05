@@ -42,16 +42,6 @@ async def command_start_handler(message: Message) -> None:
     )
 
 
-@router.message(commands=["todos_list"])
-async def command_todos_list(
-    message: Message, group: Group, session: AsyncSession
-) -> None:
-    q = sa.select(Todo).where(Todo.group_id == group.id)
-    res = await session.execute(q)
-    todos = res.scalars().unique().all()
-    await message.answer("\n".join([t.text for t in todos]))
-
-
 @router.message(Command(commands=["todo"], commands_prefix="!"))
 async def create_todo(
     message: types.Message,
@@ -155,7 +145,6 @@ async def create_todo_for_user(
             users = [
                 user
                 for user in await parse_users(message, session)
-                if user not in todo.users
             ]
             session.add_all(
                 [Performer(todo_id=todo.id, user_id=user.id) for user in users]
