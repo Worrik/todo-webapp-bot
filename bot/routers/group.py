@@ -122,6 +122,53 @@ async def add_users(message: Message, session: AsyncSession, bot: Bot):
 
 
 @router.message(
+    Command(commands=["todo-for", "todo-user"], commands_prefix="!"),
+)
+async def create_todo_for_user(
+    message: Message, session: AsyncSession, bot: Bot, user: User, group: Group
+):
+    async with ChatActionSender.typing(bot=bot, chat_id=message.chat.id):
+        todo_message = message.reply_to_message
+
+        if not todo_message:
+            return
+
+        text = todo_message.text
+
+        if not text:
+            await message.reply(_("Error: the message doesn't have text."))
+            return
+
+        todo = Todo(
+            id=todo_message.message_id,
+            creator_id=user.id,
+            text=text,
+            group_id=group.id,
+        )
+        session.add(todo)
+
+        try:
+            await session.commit()
+        except sa.exc.IntegrityError:
+            await message.reply(_("Already created todo from this message"))
+        else:
+            users = [
+                user
+                for user in await parse_users(message, session)
+                if user not in todo.users
+            ]
+            session.add_all(
+                [Performer(todo_id=todo.id, user_id=user.id) for user in users]
+            )
+            await session.commit()
+            await message.reply(
+                _(
+                    "Successfully create a todo for {count_users} user(s)\n"
+                ).format(count_users=len(users))
+            )
+
+
+@router.message(
     Command(commands=["tag", "tags"], commands_prefix="!"), TodoReplyFilter()
 )
 async def add_tags(message: Message, session: AsyncSession, bot: Bot):
