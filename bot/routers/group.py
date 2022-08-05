@@ -214,7 +214,7 @@ async def get_or_set_todo_status(
             Todo, (todo_message.message_id, todo_message.chat.id)
         )
 
-        message_status = message.text[6:]
+        message_status = message.text.split("!status", maxsplit=1)[-1]
 
         if not message_status:
             await message.reply(
