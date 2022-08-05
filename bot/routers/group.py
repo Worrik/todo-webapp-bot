@@ -207,14 +207,14 @@ async def get_or_set_todo_status(
     async with ChatActionSender.typing(bot=bot, chat_id=message.chat.id):
         todo_message = message.reply_to_message
 
-        if not todo_message or not todo_message.text:
+        if not todo_message or not message.text:
             return
 
         todo: Todo = await session.get(
             Todo, (todo_message.message_id, todo_message.chat.id)
         )
 
-        message_status = todo_message.text[6:]
+        message_status = message.text[6:]
 
         if not message_status:
             await message.reply(
