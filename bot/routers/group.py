@@ -11,7 +11,7 @@ from bot.filters.chat_type import GroupFilter
 from bot.filters.is_todo import IsTodoFilter
 from bot.filters.reply_todo import TodoReplyFilter
 from models.group import Group
-from models.todo import Performer, Tag, Todo
+from models.todo import Performer, Status, Tag, Todo
 from models.user import User
 
 import sqlalchemy as sa
@@ -142,10 +142,7 @@ async def create_todo_for_user(
         except sa.exc.IntegrityError:
             await message.reply(_("Already created todo from this message"))
         else:
-            users = [
-                user
-                for user in await parse_users(message, session)
-            ]
+            users = [user for user in await parse_users(message, session)]
             session.add_all(
                 [Performer(todo_id=todo.id, user_id=user.id) for user in users]
             )
@@ -199,6 +196,39 @@ async def delete_todo(message: Message, session: AsyncSession, bot: Bot):
         await session.delete(todo)
         await session.commit()
         await message.reply(_("Successfully deleted this todo"))
+
+
+@router.message(
+    Command(commands=["status"], commands_prefix="!"), TodoReplyFilter()
+)
+async def get_or_set_todo_status(
+    message: Message, session: AsyncSession, bot: Bot
+):
+    async with ChatActionSender.typing(bot=bot, chat_id=message.chat.id):
+        todo_message = message.reply_to_message
+
+        if not todo_message or not todo_message.text:
+            return
+
+        todo: Todo = await session.get(
+            Todo, (todo_message.message_id, todo_message.chat.id)
+        )
+
+        message_status = todo_message.text[6:]
+
+        if not message_status:
+            await message.reply(todo.status)
+        else:
+            q = sa.select(Status).where(Status.name.ilike(message_status))
+            status = await session.scalar(q)
+
+            if not status:
+                status = Status(name=message_status)
+                session.add(status)
+
+            todo.status = status
+            session.add(todo)
+            await session.commit()
 
 
 @router.edited_message(IsTodoFilter())
