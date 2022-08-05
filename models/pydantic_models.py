@@ -14,7 +14,7 @@ class TagPydantic(OrmModel):
     name: str
 
 
-class Status(OrmModel):
+class StatusPydantic(OrmModel):
     name: Optional[str]
 
 
@@ -26,7 +26,7 @@ class TodoPydantic(OrmModel):
     users: List[types.User]
     tags: List[TagPydantic]
     text: str
-    status: Optional[Status]
+    status: Optional[StatusPydantic]
 
 
 class GroupPydantic(OrmModel):

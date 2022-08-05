@@ -7,12 +7,14 @@ from fastapi.staticfiles import StaticFiles
 from aiogram.utils.web_app import safe_parse_webapp_init_data
 
 from models import Todo, Group, User, GroupUser
-from models.pydantic_models import GroupPydantic, TodoPydantic
+from models.pydantic_models import GroupPydantic, StatusPydantic, TodoPydantic
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
 from config import DATABASE_URL, TOKEN
 
 import sqlalchemy as sa
+
+from models.todo import Status
 
 
 app = FastAPI()
@@ -56,9 +58,9 @@ async def get_telegram_user(
     return user
 
 
-@app.get("/todos")
+@app.get("/groups/{group_id}/todos")
 async def todos(
-    group_id: Optional[int] = None,
+    group_id: int,
     session: AsyncSession = Depends(get_session),
     user: User = Depends(get_telegram_user),
 ) -> List[TodoPydantic]:
@@ -72,6 +74,23 @@ async def todos(
     res = await session.execute(q)
     todos = res.unique().scalars()
     return [TodoPydantic.from_orm(todo) for todo in todos]
+
+
+@app.put("/groups/{group_id}/todos/{todo_id}/status", status_code=204)
+async def set_todo_status(
+    group_id: int,
+    todo_id: int,
+    status: StatusPydantic,
+    session: AsyncSession = Depends(get_session),
+):
+    todo = await session.get(Todo, (todo_id, group_id))
+
+    if not todo or not status.name:
+        raise HTTPException(404)
+
+    todo.status = await session.get(Status, status.name)
+    session.add(todo)
+    await session.commit()
 
 
 @app.get("/groups")
