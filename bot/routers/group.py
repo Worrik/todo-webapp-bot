@@ -214,7 +214,7 @@ async def get_or_set_todo_status(
             Todo, (todo_message.message_id, todo_message.chat.id)
         )
 
-        message_status = message.text.split("!status", maxsplit=1)[-1]
+        message_status = message.text.split("!status", maxsplit=1)[-1].strip()
 
         if not message_status:
             await message.reply(
@@ -231,6 +231,9 @@ async def get_or_set_todo_status(
             todo.status = status
             session.add(todo)
             await session.commit()
+            await message.reply(
+                _("Successfully set status: {status}").format(message_status)
+            )
 
 
 @router.edited_message(IsTodoFilter())
