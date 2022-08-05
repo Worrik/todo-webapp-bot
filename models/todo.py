@@ -25,7 +25,7 @@ class Todo(TimestampMixin, Base):
     status_name = sa.Column(
         sa.ForeignKey("statuses.name", ondelete="set null")
     )
-    status = relationship("Status", back_populates="todos", lazy=True)
+    status = relationship("Status", back_populates="todos", lazy=False)
 
     text = sa.Column(sa.Text)
 
