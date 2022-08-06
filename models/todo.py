@@ -1,4 +1,4 @@
-from models.base import Base, BaseModel, TimestampMixin
+from models.base import Base, TimestampMixin
 from sqlalchemy.orm import relationship
 
 import sqlalchemy as sa
@@ -10,7 +10,7 @@ class Todo(TimestampMixin, Base):
     id = sa.Column(sa.BigInteger, nullable=False, primary_key=True)
 
     creator_id = sa.Column(sa.ForeignKey("users.id", onupdate="cascade"))
-    creator = relationship("User", back_populates="created_todos")
+    creator = relationship("User", back_populates="created_todos", lazy=False)
 
     group_id = sa.Column(
         sa.ForeignKey("groups.id", onupdate="cascade"), primary_key=True

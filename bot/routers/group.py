@@ -5,12 +5,12 @@ from aiogram import types
 from aiogram.types import Message
 from aiogram.utils.chat_action import ChatActionSender
 from aiogram.utils.i18n import gettext as _
-from aiogram.utils.text_decorations import html_decoration
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from bot.filters.chat_type import GroupFilter
 from bot.filters.is_todo import IsTodoFilter
 from bot.filters.reply_todo import TodoReplyFilter
+from bot.utils.html_unparse import html_decoration
 from models.group import Group
 from models.todo import Performer, Status, Tag, Todo
 from models.user import User
@@ -55,6 +55,7 @@ async def create_todo(
         todo_message = message.reply_to_message or message
 
         text = todo_message.text or ""
+        text = html_decoration.unparse(text, message.entities)
 
         if todo_message == message:
             text = text[6:]
@@ -62,8 +63,6 @@ async def create_todo(
         if not text:
             await message.reply(_("Error: the message doesn't have text."))
             return
-
-        text = html_decoration.unparse(text, message.entities)
 
         todo = Todo(
             id=todo_message.message_id,
