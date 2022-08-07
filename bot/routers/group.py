@@ -127,7 +127,7 @@ async def create_todo_for_user(
             return
 
         text = todo_message.text or ""
-        text = html_decoration.unparse(text, message.entities)
+        text = html_decoration.unparse(text, todo_message.entities)
         text = text.replace('\n', '<br/>')
 
         if not text:
