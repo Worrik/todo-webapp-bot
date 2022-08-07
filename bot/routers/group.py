@@ -56,6 +56,7 @@ async def create_todo(
 
         text = todo_message.text or ""
         text = html_decoration.unparse(text, message.entities)
+        text = text.replace('\n', '<br/>')
 
         if todo_message == message:
             text = text[6:]
