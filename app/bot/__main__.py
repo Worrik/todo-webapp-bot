@@ -1,8 +1,9 @@
-from aiogram import Bot, Dispatcher
+from aiogram import Bot, Dispatcher, types
 from aiogram.utils.i18n import I18n
 from aiogram.utils.i18n.middleware import SimpleI18nMiddleware
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
+import asyncio
 
 from app.bot.middlewares.db import DBMiddleware
 from app.config import DATABASE_URL, TOKEN
@@ -14,7 +15,12 @@ from app.bot.routers import group, user
 dp = Dispatcher()
 
 
-def main() -> None:
+async def on_startup(bot: Bot):
+    commands = [types.BotCommand(command="help", description="Help")]
+    await bot.set_my_commands(commands)
+
+
+async def main() -> None:
     bot = Bot(TOKEN, parse_mode="html")
     engine = create_async_engine(DATABASE_URL, echo=True)
     async_session = sessionmaker(
@@ -37,8 +43,14 @@ def main() -> None:
     dp.include_router(user.router)
     dp.include_router(group.router)
 
-    dp.run_polling(bot)
+    try:
+        print("Run on_startup")
+        await on_startup(bot)
+        print("Start")
+        await dp.start_polling(bot)
+    except KeyboardInterrupt:
+        print("Stop")
 
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
