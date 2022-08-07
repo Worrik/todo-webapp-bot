@@ -126,13 +126,13 @@ async def create_todo_for_user(
         if not todo_message:
             return
 
-        text = todo_message.text
+        text = todo_message.text or ""
+        text = html_decoration.unparse(text, message.entities)
+        text = text.replace('\n', '<br/>')
 
         if not text:
             await message.reply(_("Error: the message doesn't have text."))
             return
-
-        text = html_decoration.unparse(text, message.entities)
 
         todo = Todo(
             id=todo_message.message_id,
