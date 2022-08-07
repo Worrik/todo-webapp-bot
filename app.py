@@ -124,12 +124,11 @@ async def set_todo_status(
 async def delete_todo(
     group_id: int,
     todo_id: int,
-    status: StatusPydantic,
     session: AsyncSession = Depends(get_session),
 ):
     todo = await session.get(Todo, (todo_id, group_id))
 
-    if not todo or not status.name:
+    if not todo:
         raise HTTPException(404)
 
     await session.delete(todo)
