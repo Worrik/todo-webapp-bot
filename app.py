@@ -58,6 +58,33 @@ async def get_telegram_user(
     return user
 
 
+@app.get("/groups")
+async def get_groups(
+    session: AsyncSession = Depends(get_session),
+    user: User = Depends(get_telegram_user),
+) -> List[GroupPydantic]:
+    q = (
+        sa.select(
+            [
+                Group.id,
+                Group.type,
+                Group.title,
+                Group.username,
+                Group.description,
+                Group.photo,
+                sa.func.count(Todo.id).label("todos_count"),
+            ],
+        )
+        .where(GroupUser.user_id == user.id)
+        .group_by(Group.id)
+        .outerjoin(Todo, Todo.group_id == Group.id)
+        .join(GroupUser, GroupUser.group_id == Group.id)
+    )
+    res = await session.execute(q)
+    groups = res.all()
+    return [GroupPydantic.from_orm(group) for group in groups]
+
+
 @app.get("/groups/{group_id}/todos")
 async def todos(
     group_id: int,
@@ -93,28 +120,17 @@ async def set_todo_status(
     await session.commit()
 
 
-@app.get("/groups")
-async def get_groups(
+@app.put("/groups/{group_id}/todos/{todo_id}", status_code=204)
+async def delete_todo(
+    group_id: int,
+    todo_id: int,
+    status: StatusPydantic,
     session: AsyncSession = Depends(get_session),
-    user: User = Depends(get_telegram_user),
-) -> List[GroupPydantic]:
-    q = (
-        sa.select(
-            [
-                Group.id,
-                Group.type,
-                Group.title,
-                Group.username,
-                Group.description,
-                Group.photo,
-                sa.func.count(Todo.id).label("todos_count"),
-            ],
-        )
-        .where(GroupUser.user_id == user.id)
-        .group_by(Group.id)
-        .outerjoin(Todo, Todo.group_id == Group.id)
-        .join(GroupUser, GroupUser.group_id == Group.id)
-    )
-    res = await session.execute(q)
-    groups = res.all()
-    return [GroupPydantic.from_orm(group) for group in groups]
+):
+    todo = await session.get(Todo, (todo_id, group_id))
+
+    if not todo or not status.name:
+        raise HTTPException(404)
+
+    await session.delete(todo)
+    await session.commit()
