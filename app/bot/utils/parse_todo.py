@@ -1,14 +1,13 @@
 from typing import Dict, List
 from itertools import chain, groupby
 from operator import attrgetter
-
 from aiogram.types.message import Message
 from aiogram.types.message_entity import MessageEntity
 from sqlalchemy.ext.asyncio.session import AsyncSession
 
-import sqlalchemy as sa
+from app.models.user import User
 
-from models.user import User
+import sqlalchemy as sa
 
 
 def get_entities_dict(message: Message) -> Dict[str, List[MessageEntity]]:

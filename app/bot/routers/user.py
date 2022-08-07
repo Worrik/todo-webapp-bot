@@ -3,8 +3,9 @@ from aiogram.dispatcher.filters.command import Command
 from aiogram.dispatcher.router import Router
 from aiogram.types.message import Message
 
-from bot.filters.chat_type import PrivateFilter
-from config import WEB_APP_URL
+from app.bot.filters.chat_type import PrivateFilter
+from app.config import WEB_APP_URL
+
 
 router = Router(name="user router")
 router.message.bind_filter(PrivateFilter)

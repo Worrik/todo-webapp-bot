@@ -4,11 +4,11 @@ from aiogram.utils.i18n.middleware import SimpleI18nMiddleware
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
 
-from bot.middlewares.db import DBMiddleware
-from config import DATABASE_URL, TOKEN
-from bot.middlewares.group import GroupMiddleware
-from bot.middlewares.user import UserMiddleware
-from bot.routers import group, user
+from app.bot.middlewares.db import DBMiddleware
+from app.config import DATABASE_URL, TOKEN
+from app.bot.middlewares.group import GroupMiddleware
+from app.bot.middlewares.user import UserMiddleware
+from app.bot.routers import group, user
 
 
 dp = Dispatcher()

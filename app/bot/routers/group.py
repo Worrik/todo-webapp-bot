@@ -7,17 +7,16 @@ from aiogram.utils.chat_action import ChatActionSender
 from aiogram.utils.i18n import gettext as _
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from bot.filters.chat_type import GroupFilter
-from bot.filters.is_todo import IsTodoFilter
-from bot.filters.reply_todo import TodoReplyFilter
-from bot.utils.html_unparse import html_decoration
-from models.group import Group
-from models.todo import Performer, Status, Tag, Todo
-from models.user import User
+from app.bot.filters.chat_type import GroupFilter
+from app.bot.filters.is_todo import IsTodoFilter
+from app.bot.filters.reply_todo import TodoReplyFilter
+from app.bot.utils.html_unparse import html_decoration
+from app.bot.utils.parse_todo import parse_tags, parse_users
+from app.models.group import Group
+from app.models.todo import Performer, Status, Tag, Todo
+from app.models.user import User
 
 import sqlalchemy as sa
-
-from bot.utils.parse_todo import parse_tags, parse_users
 
 
 router = Router(name="group router")
@@ -56,7 +55,7 @@ async def create_todo(
 
         text = todo_message.text or ""
         text = html_decoration.unparse(text, message.entities)
-        text = text.replace('\n', '<br/>')
+        text = text.replace("\n", "<br/>")
 
         if todo_message == message:
             text = text[6:]
@@ -128,7 +127,7 @@ async def create_todo_for_user(
 
         text = todo_message.text or ""
         text = html_decoration.unparse(text, todo_message.entities)
-        text = text.replace('\n', '<br/>')
+        text = text.replace("\n", "<br/>")
 
         if not text:
             await message.reply(_("Error: the message doesn't have text."))

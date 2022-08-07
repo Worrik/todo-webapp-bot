@@ -6,15 +6,21 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from aiogram.utils.web_app import safe_parse_webapp_init_data
 
-from models import Todo, Group, User, GroupUser
-from models.pydantic_models import GroupPydantic, StatusPydantic, TodoPydantic
+from app.models import (
+    Todo,
+    Status,
+    Group,
+    User,
+    GroupUser,
+    GroupPydantic,
+    StatusPydantic,
+    TodoPydantic,
+)
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
-from config import DATABASE_URL, TOKEN
+from app.config import DATABASE_URL, TOKEN
 
 import sqlalchemy as sa
-
-from models.todo import Status
 
 
 app = FastAPI()

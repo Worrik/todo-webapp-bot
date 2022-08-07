@@ -4,8 +4,8 @@ from aiogram.client.bot import Bot
 from aiogram.types import Message
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from models.group import Group, GroupUser
-from models.user import User
+from app.models.group import Group, GroupUser
+from app.models.user import User
 
 import sqlalchemy as sa
 
