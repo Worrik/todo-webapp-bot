@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List
 from fastapi import FastAPI
 from fastapi.params import Depends, Header
 from fastapi.exceptions import HTTPException
@@ -120,7 +120,7 @@ async def set_todo_status(
     await session.commit()
 
 
-@app.put("/groups/{group_id}/todos/{todo_id}", status_code=204)
+@app.delete("/groups/{group_id}/todos/{todo_id}", status_code=204)
 async def delete_todo(
     group_id: int,
     todo_id: int,
