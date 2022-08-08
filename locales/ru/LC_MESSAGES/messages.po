@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-08-05 14:10+0300\n"
+"POT-Creation-Date: 2022-08-08 20:41+0300\n"
 "PO-Revision-Date: 2022-07-26 19:01+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -19,11 +19,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.10.3\n"
 
-#: bot/routers/group.py:30
+#: app/bot/routers/group/info.py:13
 msgid "Chat with bot"
 msgstr ""
 
-#: bot/routers/group.py:34
+#: app/bot/routers/group/info.py:17 app/bot/routers/user/user.py:32
 msgid ""
 "Commands:\n"
 "<code>!todo</code> - create a todo.\n"
@@ -32,43 +32,53 @@ msgid ""
 "<code>!del</code> or <code>!delete</code> - delete a todo."
 msgstr ""
 
-#: bot/routers/group.py:62 bot/routers/group.py:129
+#: app/bot/routers/group/todo/base.py:43
+#: app/bot/routers/group/todo/users.py:115
 msgid "Error: the message doesn't have text."
 msgstr ""
 
-#: bot/routers/group.py:76 bot/routers/group.py:143
+#: app/bot/routers/group/todo/base.py:57
+#: app/bot/routers/group/todo/users.py:129
 msgid "Already created todo from this message"
 msgstr ""
 
-#: bot/routers/group.py:79
+#: app/bot/routers/group/todo/base.py:60
 msgid ""
 "Successfully create a todo.\n"
 "Now you can add <code>!users</code> or <code>!tags</code> by replying to "
 "a todo message."
 msgstr ""
 
-#: bot/routers/group.py:110
-msgid "Added {users_count} user(s)"
-msgstr ""
-
-#: bot/routers/group.py:151
-msgid "Successfully create a todo for {count_users} user(s)\n"
-msgstr ""
-
-#: bot/routers/group.py:179
+#: app/bot/routers/group/todo/base.py:93
 msgid "Added {tags_count} tag(s)"
 msgstr ""
 
-#: bot/routers/group.py:198
+#: app/bot/routers/group/todo/base.py:112
 msgid "Successfully deleted this todo"
 msgstr ""
 
-#: bot/routers/group.py:221
+#: app/bot/routers/group/todo/base.py:137
 msgid "Todo doesn't have the status."
 msgstr ""
 
-#: bot/routers/group.py:235
+#: app/bot/routers/group/todo/base.py:151
 msgid "Successfully set status: {status}"
+msgstr ""
+
+#: app/bot/routers/group/todo/users.py:57
+msgid "Added {users_count} user(s)"
+msgstr ""
+
+#: app/bot/routers/group/todo/users.py:144
+msgid "Successfully create a todo for {count_users} user(s)\n"
+msgstr ""
+
+#: app/bot/routers/user/user.py:21
+msgid "How to use"
+msgstr ""
+
+#: app/bot/routers/user/user.py:21
+msgid "how_to_use_url"
 msgstr ""
 
 #~ msgid ""

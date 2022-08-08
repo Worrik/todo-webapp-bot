@@ -7,39 +7,18 @@ from aiogram.utils.chat_action import ChatActionSender
 from aiogram.utils.i18n import gettext as _
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.bot.filters.chat_type import GroupFilter
 from app.bot.filters.is_todo import IsTodoFilter
 from app.bot.filters.reply_todo import TodoReplyFilter
 from app.bot.utils.html_unparse import html_decoration
-from app.bot.utils.parse_todo import parse_tags, parse_users
+from app.bot.utils.parse_todo import parse_tags
 from app.models.group import Group
-from app.models.todo import Performer, Status, Tag, Todo
+from app.models.todo import Status, Tag, Todo
 from app.models.user import User
 
 import sqlalchemy as sa
 
 
-router = Router(name="group router")
-router.message.bind_filter(GroupFilter)
-router.edited_message.bind_filter(GroupFilter)
-
-
-@router.message(commands=["start", "help"])
-async def command_start_handler(message: Message) -> None:
-    link_button = types.InlineKeyboardButton(
-        text=_("Chat with bot"), url="https://t.me/todo_webapp_bot"
-    )
-    keyboard = types.InlineKeyboardMarkup(inline_keyboard=[[link_button]])
-    await message.answer(
-        _(
-            "Commands:\n"
-            "<code>!todo</code> - create a todo.\n"
-            "<code>!user</code> or <code>!users</code> - add user(s).\n"
-            "<code>!tag</code> or <code>!tags</code> - add tag(s).\n"
-            "<code>!del</code> or <code>!delete</code> - delete a todo."
-        ),
-        reply_markup=keyboard,
-    )
+router = Router(name="group todos base")
 
 
 @router.message(Command(commands=["todo"], commands_prefix="!"))
@@ -87,78 +66,6 @@ async def create_todo(
 
 
 @router.message(
-    Command(commands=["user", "users"], commands_prefix="!"), TodoReplyFilter()
-)
-async def add_users(message: Message, session: AsyncSession, bot: Bot):
-    async with ChatActionSender.typing(bot=bot, chat_id=message.chat.id):
-        todo_message = message.reply_to_message
-
-        if not todo_message:
-            return
-
-        todo = await session.get(
-            Todo, (todo_message.message_id, todo_message.chat.id)
-        )
-        users = [
-            user
-            for user in await parse_users(message, session)
-            if user not in todo.users
-        ]
-        session.add_all(
-            [Performer(todo_id=todo.id, user_id=user.id) for user in users]
-        )
-        await session.commit()
-        await message.reply(
-            _("Added {users_count} user(s)").format(users_count=len(users))
-        )
-
-
-@router.message(
-    Command(commands=["todo-for", "todo-user"], commands_prefix="!"),
-)
-async def create_todo_for_user(
-    message: Message, session: AsyncSession, bot: Bot, user: User, group: Group
-):
-    async with ChatActionSender.typing(bot=bot, chat_id=message.chat.id):
-        todo_message = message.reply_to_message
-
-        if not todo_message:
-            return
-
-        text = todo_message.text or ""
-        text = html_decoration.unparse(text, todo_message.entities)
-        text = text.replace("\n", "<br/>")
-
-        if not text:
-            await message.reply(_("Error: the message doesn't have text."))
-            return
-
-        todo = Todo(
-            id=todo_message.message_id,
-            creator_id=user.id,
-            text=text,
-            group_id=group.id,
-        )
-        session.add(todo)
-
-        try:
-            await session.commit()
-        except sa.exc.IntegrityError:
-            await message.reply(_("Already created todo from this message"))
-        else:
-            users = [user for user in await parse_users(message, session)]
-            session.add_all(
-                [Performer(todo_id=todo.id, user_id=user.id) for user in users]
-            )
-            await session.commit()
-            await message.reply(
-                _(
-                    "Successfully create a todo for {count_users} user(s)\n"
-                ).format(count_users=len(users))
-            )
-
-
-@router.message(
     Command(commands=["tag", "tags"], commands_prefix="!"), TodoReplyFilter()
 )
 async def add_tags(message: Message, session: AsyncSession, bot: Bot):
@@ -176,7 +83,10 @@ async def add_tags(message: Message, session: AsyncSession, bot: Bot):
             tag for tag in await parse_tags(message) if tag not in tags
         ]
         session.add_all(
-            [Tag(todo_id=todo.id, name=tag) for tag in set(new_tags)]
+            [
+                Tag(todo_id=todo.id, todo_group_id=todo.group_id, name=tag)
+                for tag in set(new_tags)
+            ]
         )
         await session.commit()
         await message.reply(
@@ -257,8 +167,3 @@ async def edit_todo(edited_message: Message, session: AsyncSession):
     )
     await session.execute(q)
     await session.commit()
-
-
-@router.message()
-async def echo(_: Message):
-    pass

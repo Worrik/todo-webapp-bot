@@ -42,22 +42,30 @@ class Status(Base):
 class Performer(TimestampMixin, Base):
     __tablename__ = "performers"
 
-    todo_id = sa.Column(
-        sa.ForeignKey("todos.id", onupdate="cascade", ondelete="cascade")
-    )
+    todo_id = sa.Column(sa.BigInteger)
+    todo_group_id = sa.Column(sa.BigInteger)
     user_id = sa.Column(
         sa.ForeignKey("users.id", onupdate="cascade", ondelete="cascade")
     )
-    __table_args__ = (sa.UniqueConstraint("todo_id", "user_id"),)
+    __table_args__ = (
+        sa.UniqueConstraint("todo_id", "user_id"),
+        sa.ForeignKeyConstraint(
+            ["todo_id", "todo_group_id"], ["todos.id", "todos.group_id"]
+        ),
+    )
 
 
 class Tag(TimestampMixin, Base):
     __tablename__ = "tags"
 
-    todo_id = sa.Column(
-        sa.ForeignKey("todos.id", onupdate="cascade", ondelete="cascade")
-    )
+    todo_id = sa.Column(sa.BigInteger)
+    todo_group_id = sa.Column(sa.BigInteger)
     todo = relationship("Todo", back_populates="tags")
     name = sa.Column(sa.String(50))
 
-    __table_args__ = (sa.UniqueConstraint("todo_id", "name"),)
+    __table_args__ = (
+        sa.UniqueConstraint("todo_id", "name"),
+        sa.ForeignKeyConstraint(
+            ["todo_id", "todo_group_id"], ["todos.id", "todos.group_id"]
+        ),
+    )
