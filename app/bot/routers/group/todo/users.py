@@ -108,7 +108,9 @@ async def delete_users(
 
 
 @router.message(
-    Command(commands=["todo-for", "todo-user"], commands_prefix="!"),
+    Command(
+        commands=["todo-for", "todo-user", "todo-users"], commands_prefix="!"
+    ),
 )
 async def create_todo_for_user(
     message: Message, session: AsyncSession, bot: Bot, user: User, group: Group

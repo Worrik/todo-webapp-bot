@@ -91,7 +91,7 @@ msgstr ""
 
 #: app/bot/routers/user/user.py:21
 msgid "how_to_use_url"
-msgstr "https://www.google.com/"
+msgstr "https://telegra.ph/YAk-vikoristovuvati-TODO-Bot-08-08"
 
 #~ msgid "Added {tags_count} tag(s)"
 #~ msgstr "Додано {tags_count} тегів"

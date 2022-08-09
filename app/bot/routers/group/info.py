@@ -9,10 +9,15 @@ router = Router(name="group info")
 
 @router.message(commands=["start", "help"])
 async def command_start_handler(message: Message) -> None:
-    link_button = types.InlineKeyboardButton(
+    link_to_bot_button = types.InlineKeyboardButton(
         text=_("Chat with bot"), url="https://t.me/todo_webapp_bot"
     )
-    keyboard = types.InlineKeyboardMarkup(inline_keyboard=[[link_button]])
+    how_to_use_button = types.InlineKeyboardButton(
+        text=_("How to use"), url=_("how_to_use_url")
+    )
+    keyboard = types.InlineKeyboardMarkup(
+        inline_keyboard=[[link_to_bot_button, how_to_use_button]]
+    )
     await message.answer(
         _(
             "Commands:\n"

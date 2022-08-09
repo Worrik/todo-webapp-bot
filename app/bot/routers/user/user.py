@@ -20,8 +20,12 @@ async def start_command(message: Message):
     info_button = types.InlineKeyboardButton(
         text=_("How to use"), url=_("how_to_use_url")
     )
+    add_to_group_button = types.InlineKeyboardButton(
+        text=_("Add to group"),
+        url="https://t.me/todo_webapp_bot?startgroup=true",
+    )
     keyboard = types.InlineKeyboardMarkup(
-        inline_keyboard=[[web_app_button, info_button]]
+        inline_keyboard=[[web_app_button, info_button], [add_to_group_button]]
     )
     await message.answer("Hello", reply_markup=keyboard)
 
