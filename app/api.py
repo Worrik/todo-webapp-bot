@@ -22,6 +22,8 @@ from app.config import DATABASE_URL, TOKEN
 
 import sqlalchemy as sa
 
+from app.models.todo import Performer
+
 
 app = FastAPI()
 app.add_middleware(
@@ -69,23 +71,22 @@ async def get_groups(
     session: AsyncSession = Depends(get_session),
     user: User = Depends(get_telegram_user),
 ) -> List[GroupPydantic]:
-    q = (
-        sa.select(
-            [
-                Group.id,
-                Group.type,
-                Group.title,
-                Group.username,
-                Group.description,
-                Group.photo,
-                sa.func.count(Todo.id).label("todos_count"),
-            ],
-        )
-        .where(GroupUser.user_id == user.id)
-        .group_by(Group.id)
-        .outerjoin(Todo, Todo.group_id == Group.id)
-        .join(GroupUser, GroupUser.group_id == Group.id)
+    q = sa.select(
+        [
+            Group.id,
+            Group.type,
+            Group.title,
+            Group.username,
+            Group.description,
+            Group.photo,
+            sa.func.count(Todo.id).label("todos_count"),
+        ],
     )
+    q = q.where(GroupUser.user_id == user.id)
+    q = q.group_by(Group.id)
+    q = q.outerjoin(Todo, Todo.group_id == Group.id)
+    q = q.join(GroupUser, GroupUser.group_id == Group.id)
+
     res = await session.execute(q)
     groups = res.all()
     return [GroupPydantic.from_orm(group) for group in groups]
@@ -102,8 +103,8 @@ async def todos(
     q = q.where(
         sa.and_(GroupUser.user_id == user.id, GroupUser.group_id == group_id)
     )
+    q = q.where(Performer.user_id == GroupUser.user_id)
     q = q.join(Group, Group.id == Todo.group_id)
-    q = q.join(GroupUser, GroupUser.group_id == Group.id)
 
     res = await session.execute(q)
     todos = res.unique().scalars()
