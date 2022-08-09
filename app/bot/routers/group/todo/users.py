@@ -80,7 +80,7 @@ async def delete_users(
         users = [
             user
             for user in await parse_users(message, session)
-            if user not in todo.users
+            if user in todo.users
         ]
 
         if message.text and "me" in message.text.split():
