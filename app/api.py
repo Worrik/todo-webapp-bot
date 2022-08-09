@@ -103,10 +103,8 @@ async def todos(
     q = q.where(
         sa.and_(GroupUser.user_id == user.id, GroupUser.group_id == group_id)
     )
-    PerformerGroupId = GroupUser
-    q = q.where(Performer.group_id == PerformerGroupId.group_id)
     q = q.join(Group, Group.id == Todo.group_id)
-    q = q.join(PerformerGroupId, PerformerGroupId.user_id == Performer.user_id)
+    q = q.join(GroupUser, GroupUser.user_id == Performer.user_id)
 
     res = await session.execute(q)
     todos = res.unique().scalars()
