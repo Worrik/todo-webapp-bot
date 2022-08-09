@@ -104,6 +104,11 @@ async def todos(
         sa.and_(GroupUser.user_id == user.id, GroupUser.group_id == group_id)
     )
     q = q.join(Group, Group.id == Todo.group_id)
+    q = q.join(
+        Performer,
+        Performer.todo_id == Todo.id,
+        Performer.todo_group_id == Todo.group_id,
+    )
     q = q.join(GroupUser, GroupUser.user_id == Performer.user_id)
 
     res = await session.execute(q)
