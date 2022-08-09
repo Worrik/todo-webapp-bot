@@ -1,4 +1,5 @@
 from aiogram import types
+from aiogram.client.bot import Bot
 from aiogram.dispatcher.filters.command import Command
 from aiogram.dispatcher.router import Router
 from aiogram.types.message import Message
@@ -13,9 +14,10 @@ router.message.bind_filter(PrivateFilter)
 
 
 @router.message(Command(commands=["start"]))
-async def start_command(message: Message):
+async def start_command(message: Message, bot: Bot):
+    web_app_info = types.WebAppInfo(url=WEB_APP_URL)
     web_app_button = types.InlineKeyboardButton(
-        text="Todos", web_app=types.WebAppInfo(url=WEB_APP_URL)
+        text="Todos", web_app=web_app_info
     )
     info_button = types.InlineKeyboardButton(
         text=_("How to use"), url=_("how_to_use_url")
@@ -24,10 +26,29 @@ async def start_command(message: Message):
         text=_("Add to group"),
         url="https://t.me/todo_webapp_bot?startgroup=true",
     )
-    keyboard = types.InlineKeyboardMarkup(
-        inline_keyboard=[[web_app_button, info_button], [add_to_group_button]]
+    support_button = types.InlineKeyboardButton(
+        text=_("Support"), url="https://t.me/worrik"
     )
-    await message.answer("Hello", reply_markup=keyboard)
+    keyboard = types.InlineKeyboardMarkup(
+        inline_keyboard=[
+            [web_app_button, info_button],
+            [add_to_group_button, support_button],
+        ]
+    )
+    await message.answer(
+        _(
+            "Hello! I'm a TODO bot. Here are some valuable "
+            "links and a Todos button."
+        ),
+        reply_markup=keyboard,
+    )
+
+    await bot.set_chat_menu_button(
+        message.chat.id,
+        types.MenuButtonWebApp(
+            type="web_app", text="Todos", web_app=web_app_info
+        ),
+    )
 
 
 @router.message(commands=["help"])

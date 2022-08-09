@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-08-08 21:37+0300\n"
+"POT-Creation-Date: 2022-08-09 22:48+0300\n"
 "PO-Revision-Date: 2022-07-26 19:01+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -23,7 +23,15 @@ msgstr ""
 msgid "Chat with bot"
 msgstr ""
 
-#: app/bot/routers/group/info.py:17 app/bot/routers/user/user.py:32
+#: app/bot/routers/group/info.py:16 app/bot/routers/user/user.py:23
+msgid "How to use"
+msgstr ""
+
+#: app/bot/routers/group/info.py:16 app/bot/routers/user/user.py:23
+msgid "how_to_use_url"
+msgstr ""
+
+#: app/bot/routers/group/info.py:22 app/bot/routers/user/user.py:57
 msgid ""
 "Commands:\n"
 "<code>!todo</code> - create a todo.\n"
@@ -33,12 +41,12 @@ msgid ""
 msgstr ""
 
 #: app/bot/routers/group/todo/base.py:43
-#: app/bot/routers/group/todo/users.py:126
+#: app/bot/routers/group/todo/users.py:129
 msgid "Error: the message doesn't have text."
 msgstr ""
 
 #: app/bot/routers/group/todo/base.py:57
-#: app/bot/routers/group/todo/users.py:140
+#: app/bot/routers/group/todo/users.py:143
 msgid "Already created todo from this message"
 msgstr ""
 
@@ -69,20 +77,24 @@ msgstr ""
 msgid "Added {users_count} user(s)"
 msgstr ""
 
-#: app/bot/routers/group/todo/users.py:103
+#: app/bot/routers/group/todo/users.py:104
 msgid "Removed {users_count} user(s)"
 msgstr ""
 
-#: app/bot/routers/group/todo/users.py:155
+#: app/bot/routers/group/todo/users.py:158
 msgid "Successfully create a todo for {count_users} user(s)\n"
 msgstr ""
 
-#: app/bot/routers/user/user.py:21
-msgid "How to use"
+#: app/bot/routers/user/user.py:26
+msgid "Add to group"
 msgstr ""
 
-#: app/bot/routers/user/user.py:21
-msgid "how_to_use_url"
+#: app/bot/routers/user/user.py:30
+msgid "Support"
+msgstr ""
+
+#: app/bot/routers/user/user.py:39
+msgid "Hello! I'm a TODO bot. Here are some valuable links and a Todos button."
 msgstr ""
 
 #~ msgid ""
@@ -111,5 +123,11 @@ msgstr ""
 #~ msgstr ""
 
 #~ msgid "Welcome"
+#~ msgstr ""
+
+#~ msgid "Hello! I'm TODO bot. Here is a usefull links and <i>Todos</i> button."
+#~ msgstr ""
+
+#~ msgid "Hello! I'm a TODO bot. Here is a useful links and <i>Todos</i> button."
 #~ msgstr ""
 
