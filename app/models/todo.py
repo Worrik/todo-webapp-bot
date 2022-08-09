@@ -29,6 +29,8 @@ class Todo(TimestampMixin, Base):
 
     text = sa.Column(sa.Text)
 
+    __table_args__ = (sa.UniqueConstraint("id", "group_id"),)
+
 
 class Status(Base):
     __tablename__ = "statuses"
@@ -48,7 +50,7 @@ class Performer(TimestampMixin, Base):
         sa.ForeignKey("users.id", onupdate="cascade", ondelete="cascade")
     )
     __table_args__ = (
-        sa.UniqueConstraint("todo_id", "user_id"),
+        sa.UniqueConstraint("todo_id", "todo_group_id", "user_id"),
         sa.ForeignKeyConstraint(
             ["todo_id", "todo_group_id"], ["todos.id", "todos.group_id"]
         ),

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-08-08 20:41+0300\n"
+"POT-Creation-Date: 2022-08-08 21:37+0300\n"
 "PO-Revision-Date: 2022-07-26 19:01+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -32,12 +32,12 @@ msgid ""
 msgstr ""
 
 #: app/bot/routers/group/todo/base.py:43
-#: app/bot/routers/group/todo/users.py:115
+#: app/bot/routers/group/todo/users.py:126
 msgid "Error: the message doesn't have text."
 msgstr ""
 
 #: app/bot/routers/group/todo/base.py:57
-#: app/bot/routers/group/todo/users.py:129
+#: app/bot/routers/group/todo/users.py:140
 msgid "Already created todo from this message"
 msgstr ""
 
@@ -68,7 +68,11 @@ msgstr ""
 msgid "Added {users_count} user(s)"
 msgstr ""
 
-#: app/bot/routers/group/todo/users.py:144
+#: app/bot/routers/group/todo/users.py:103
+msgid "Removed {users_count} user(s)"
+msgstr ""
+
+#: app/bot/routers/group/todo/users.py:155
 msgid "Successfully create a todo for {count_users} user(s)\n"
 msgstr ""
 

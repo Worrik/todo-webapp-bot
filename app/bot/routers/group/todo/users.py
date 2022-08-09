@@ -39,7 +39,7 @@ async def add_users(
             if user not in todo.users
         ]
 
-        if todo_message.text and "me" in todo_message.text.split():
+        if message.text and "me" in message.text.split():
             users.append(user)
 
         session.add_all(
@@ -83,14 +83,26 @@ async def delete_users(
             if user not in todo.users
         ]
 
-        if todo_message.text and "me" in todo_message.text.split():
+        if message.text and "me" in message.text.split():
             users.append(user)
 
-        sa.delete(Performer).where(
-            sa.and_(
-                Performer.user_id.in_([user.id for user in users]),
-                Performer.todo_id == todo.id,
-                Performer.todo_group_id == todo.group_id
+        q = (
+            sa.delete(Performer)
+            .where(
+                sa.and_(
+                    Performer.user_id.in_([user.id for user in users]),
+                    Performer.todo_id == todo.id,
+                    Performer.todo_group_id == todo.group_id,
+                )
+            )
+            .returning(Performer.id)
+        )
+        res = await session.execute(q)
+        await session.commit()
+
+        await message.reply(
+            _("Removed {users_count} user(s)").format(
+                users_count=len(res.all())
             )
         )
 

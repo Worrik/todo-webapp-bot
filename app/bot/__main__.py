@@ -43,14 +43,14 @@ async def main() -> None:
     dp.include_router(user.router)
     dp.include_router(group.router)
 
-    try:
-        print("Run on_startup")
-        await on_startup(bot)
-        print("Start")
-        await dp.start_polling(bot)
-    except KeyboardInterrupt:
-        print("Stop")
+    print("Run on_startup")
+    await on_startup(bot)
+    print("Start")
+    await dp.start_polling(bot)
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        print("Stop")
