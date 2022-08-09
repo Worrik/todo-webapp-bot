@@ -106,8 +106,8 @@ async def todos(
     q = q.join(Group, Group.id == Todo.group_id)
     q = q.outerjoin(
         Performer,
-        Performer.todo_id == Todo.id,
-        Performer.todo_group_id == Todo.group_id,
+        Performer.todo_id == Todo.id
+        and Performer.todo_group_id == Todo.group_id,
     )
     q = q.join(GroupUser, GroupUser.user_id == Performer.user_id)
 
