@@ -28,7 +28,7 @@ msgstr ""
 
 #: app/bot/routers/group/info.py:16 app/bot/routers/user/user.py:23
 msgid "how_to_use_url"
-msgstr "https://www.google.com/"
+msgstr "https://telegra.ph/How-to-use-TODO-Bot-08-10"
 
 #: app/bot/routers/group/info.py:22 app/bot/routers/user/user.py:57
 msgid ""
