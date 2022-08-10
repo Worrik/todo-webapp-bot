@@ -20,7 +20,8 @@ async def start_command(message: Message, bot: Bot):
         text="Todos", web_app=web_app_info
     )
     info_button = types.InlineKeyboardButton(
-        text=_("How to use"), url=_("how_to_use_url")
+        text=_("How to use"),
+        url=_("https://telegra.ph/How-to-use-TODO-Bot-08-10"),
     )
     add_to_group_button = types.InlineKeyboardButton(
         text=_("Add to group"),
