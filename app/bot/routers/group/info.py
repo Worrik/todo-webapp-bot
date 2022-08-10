@@ -1,7 +1,10 @@
 from aiogram import types
+from aiogram.client.bot import Bot
 from aiogram.dispatcher.router import Router
 from aiogram.types.message import Message
 from aiogram.utils.i18n import gettext as _
+
+from app.config import WEB_APP_URL
 
 
 router = Router(name="group info")
@@ -27,4 +30,26 @@ async def command_start_handler(message: Message) -> None:
             "<code>!del</code> or <code>!delete</code> - delete a todo."
         ),
         reply_markup=keyboard,
+    )
+
+
+@router.message(commands=["set_webapp"])
+async def set_webapp(message: Message, bot: Bot):
+    web_app_info = types.WebAppInfo(url=WEB_APP_URL)
+    await bot.set_chat_menu_button(
+        message.chat.id,
+        types.MenuButtonWebApp(
+            type="web_app", text="Todos", web_app=web_app_info
+        ),
+    )
+
+
+@router.message(commands=["unset_webapp"])
+async def unset_webapp(message: Message, bot: Bot):
+    web_app_info = types.WebAppInfo(url=WEB_APP_URL)
+    await bot.set_chat_menu_button(
+        message.chat.id,
+        types.MenuButtonWebApp(
+            type="web_app", text="Todos", web_app=web_app_info
+        ),
     )
