@@ -161,8 +161,8 @@ async def get_or_set_todo_status(
     ),
     TodoReplyFilter(),
 )
-async def add_addiotional_info(
-        message: Message, session: AsyncSession, bot: Bot, command: Command
+async def add_additional_info(
+    message: Message, session: AsyncSession, bot: Bot
 ):
     async with ChatActionSender.typing(bot=bot, chat_id=message.chat.id):
         todo_message = message.reply_to_message
@@ -176,13 +176,16 @@ async def add_addiotional_info(
             Todo, (todo_message.message_id, todo_message.chat.id)
         )
 
+        if todo.additional_info:
+            await session.delete(todo.additional_info)
+
         if not text or len(text) == len(message.text):
             todo.additional_info = None
-            await message.reply(_("Error: the message doesn't have text."))
+            await message.reply(_("Successfully set empty additional info"))
         else:
-            addiotional_info = AdditionalInfo(text=text)
-            todo.additional_info = addiotional_info
-            await message.reply(_("Successfully add addiotional info"))
+            additional_info = AdditionalInfo(text=text)
+            todo.additional_info = additional_info
+            await message.reply(_("Successfully add additional info"))
 
         session.add(todo)
         await session.commit()

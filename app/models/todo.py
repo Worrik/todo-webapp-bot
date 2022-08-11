@@ -32,7 +32,9 @@ class Todo(TimestampMixin, Base):
     additional_info_id = sa.Column(
         sa.ForeignKey("additional_info.id", ondelete="set null")
     )
-    additional_info = relationship("AdditionalInfo", back_populates="todo")
+    additional_info = relationship(
+        "AdditionalInfo", back_populates="todo", lazy=False
+    )
 
     __table_args__ = (sa.UniqueConstraint("id", "group_id"),)
 
