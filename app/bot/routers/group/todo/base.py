@@ -170,7 +170,9 @@ async def add_additional_info(
         if not todo_message or not message.text:
             return
 
-        text = message.text.split(maxsplit=1)[-1]
+        text = html_decoration.unparse(message.text, message.entities)
+        text = text.replace("\n", "<br/>")
+        text = text.split(maxsplit=1)[-1]
 
         todo = await session.get(
             Todo, (todo_message.message_id, todo_message.chat.id)
