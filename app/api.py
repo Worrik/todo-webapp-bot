@@ -38,9 +38,7 @@ app.mount("/web", StaticFiles(directory="web", html=True), name="web")
 
 
 engine = create_async_engine(DATABASE_URL, echo=True)
-async_session = sessionmaker(
-    engine, expire_on_commit=False, class_=AsyncSession
-)
+async_session = sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)
 
 
 async def get_session():
@@ -53,9 +51,7 @@ async def get_telegram_user(
     Authorization: str = Header(default=""),
 ) -> User:
     try:
-        data = safe_parse_webapp_init_data(
-            token=TOKEN, init_data=Authorization
-        )
+        data = safe_parse_webapp_init_data(token=TOKEN, init_data=Authorization)
     except ValueError:
         raise HTTPException(400)
 
@@ -100,9 +96,7 @@ async def todos(
 ) -> List[TodoPydantic]:
     q = sa.select(Todo).order_by(Todo.created_at.desc())
     q = q.where(Group.id == group_id)
-    q = q.where(
-        sa.and_(GroupUser.user_id == user.id, GroupUser.group_id == group_id)
-    )
+    q = q.where(sa.and_(GroupUser.user_id == user.id, GroupUser.group_id == group_id))
     q = q.join(Group, Group.id == Todo.group_id)
 
     res = await session.execute(q)

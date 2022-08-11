@@ -23,9 +23,7 @@ async def on_startup(bot: Bot):
 async def main() -> None:
     bot = Bot(TOKEN, parse_mode="html")
     engine = create_async_engine(DATABASE_URL, echo=True)
-    async_session = sessionmaker(
-        engine, expire_on_commit=False, class_=AsyncSession
-    )
+    async_session = sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)
     i18n = I18n(path="locales", default_locale="en", domain="messages")
 
     i18n_middleware = SimpleI18nMiddleware(i18n)

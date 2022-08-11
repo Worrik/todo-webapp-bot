@@ -23,15 +23,11 @@ def upgrade() -> None:
         "performers",
         sa.Column("todo_group_id", sa.BigInteger(), nullable=True),
     )
-    op.drop_constraint(
-        "performers_todo_id_user_id_key", "performers", type_="unique"
-    )
+    op.drop_constraint("performers_todo_id_user_id_key", "performers", type_="unique")
     op.create_unique_constraint(
         None, "performers", ["todo_id", "todo_group_id", "user_id"]
     )
-    op.drop_constraint(
-        "performers_todo_id_fkey", "performers", type_="foreignkey"
-    )
+    op.drop_constraint("performers_todo_id_fkey", "performers", type_="foreignkey")
     op.create_foreign_key(
         None,
         "performers",
@@ -39,9 +35,7 @@ def upgrade() -> None:
         ["todo_id", "todo_group_id"],
         ["id", "group_id"],
     )
-    op.add_column(
-        "tags", sa.Column("todo_group_id", sa.BigInteger(), nullable=True)
-    )
+    op.add_column("tags", sa.Column("todo_group_id", sa.BigInteger(), nullable=True))
     op.drop_constraint("tags_todo_id_fkey", "tags", type_="foreignkey")
     op.create_foreign_key(
         None, "tags", "todos", ["todo_id", "todo_group_id"], ["id", "group_id"]

@@ -22,9 +22,7 @@ class Todo(TimestampMixin, Base):
     )
     tags = relationship("Tag", back_populates="todo", lazy=False)
 
-    status_name = sa.Column(
-        sa.ForeignKey("statuses.name", ondelete="set null")
-    )
+    status_name = sa.Column(sa.ForeignKey("statuses.name", ondelete="set null"))
     status = relationship("Status", back_populates="todos", lazy=False)
 
     text = sa.Column(sa.Text)
@@ -35,9 +33,7 @@ class Todo(TimestampMixin, Base):
 class Status(Base):
     __tablename__ = "statuses"
 
-    name = sa.Column(
-        sa.String(100), primary_key=True, unique=True, nullable=False
-    )
+    name = sa.Column(sa.String(100), primary_key=True, unique=True, nullable=False)
     todos = relationship("Todo", back_populates="status")
 
 

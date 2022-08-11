@@ -38,9 +38,7 @@ async def set_webapp(message: Message, bot: Bot):
     web_app_info = types.WebAppInfo(url=WEB_APP_URL)
     await bot.set_chat_menu_button(
         message.chat.id,
-        types.MenuButtonWebApp(
-            type="web_app", text="Todos", web_app=web_app_info
-        ),
+        types.MenuButtonWebApp(type="web_app", text="Todos", web_app=web_app_info),
     )
 
 
@@ -49,7 +47,5 @@ async def unset_webapp(message: Message, bot: Bot):
     web_app_info = types.WebAppInfo(url=WEB_APP_URL)
     await bot.set_chat_menu_button(
         message.chat.id,
-        types.MenuButtonWebApp(
-            type="web_app", text="Todos", web_app=web_app_info
-        ),
+        types.MenuButtonWebApp(type="web_app", text="Todos", web_app=web_app_info),
     )

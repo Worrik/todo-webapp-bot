@@ -75,13 +75,9 @@ async def add_tags(message: Message, session: AsyncSession, bot: Bot):
         if not todo_message:
             return
 
-        todo = await session.get(
-            Todo, (todo_message.message_id, todo_message.chat.id)
-        )
+        todo = await session.get(Todo, (todo_message.message_id, todo_message.chat.id))
         tags = [tag.name for tag in todo.tags]
-        new_tags = [
-            tag for tag in await parse_tags(message) if tag not in tags
-        ]
+        new_tags = [tag for tag in await parse_tags(message) if tag not in tags]
         session.add_all(
             [
                 Tag(todo_id=todo.id, todo_group_id=todo.group_id, name=tag)
@@ -104,20 +100,14 @@ async def delete_todo(message: Message, session: AsyncSession, bot: Bot):
         if not todo_message:
             return
 
-        todo = await session.get(
-            Todo, (todo_message.message_id, todo_message.chat.id)
-        )
+        todo = await session.get(Todo, (todo_message.message_id, todo_message.chat.id))
         await session.delete(todo)
         await session.commit()
         await message.reply(_("Successfully deleted this todo"))
 
 
-@router.message(
-    Command(commands=["status"], commands_prefix="!"), TodoReplyFilter()
-)
-async def get_or_set_todo_status(
-    message: Message, session: AsyncSession, bot: Bot
-):
+@router.message(Command(commands=["status"], commands_prefix="!"), TodoReplyFilter())
+async def get_or_set_todo_status(message: Message, session: AsyncSession, bot: Bot):
     async with ChatActionSender.typing(bot=bot, chat_id=message.chat.id):
         todo_message = message.reply_to_message
 
@@ -132,9 +122,7 @@ async def get_or_set_todo_status(
 
         if not message_status:
             await message.reply(
-                todo.status.name
-                if todo.status
-                else _("Todo doesn't have the status.")
+                todo.status.name if todo.status else _("Todo doesn't have the status.")
             )
         else:
             q = sa.select(Status).where(Status.name.ilike(message_status))
@@ -148,9 +136,7 @@ async def get_or_set_todo_status(
             session.add(todo)
             await session.commit()
             await message.reply(
-                _("Successfully set status: {status}").format(
-                    status=message_status
-                )
+                _("Successfully set status: {status}").format(status=message_status)
             )
 
 
