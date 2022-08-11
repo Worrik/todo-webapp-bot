@@ -21,14 +21,18 @@ router = Router(name="group todos users")
 @router.message(
     Command(commands=["user", "users"], commands_prefix="!"), TodoReplyFilter()
 )
-async def add_users(message: Message, session: AsyncSession, bot: Bot, user: User):
+async def add_users(
+    message: Message, session: AsyncSession, bot: Bot, user: User
+):
     async with ChatActionSender.typing(bot=bot, chat_id=message.chat.id):
         todo_message = message.reply_to_message
 
         if not todo_message:
             return
 
-        todo = await session.get(Todo, (todo_message.message_id, todo_message.chat.id))
+        todo = await session.get(
+            Todo, (todo_message.message_id, todo_message.chat.id)
+        )
         users = [
             user
             for user in await parse_users(message, session)
@@ -61,16 +65,22 @@ async def add_users(message: Message, session: AsyncSession, bot: Bot, user: Use
     ),
     TodoReplyFilter(),
 )
-async def delete_users(message: Message, session: AsyncSession, bot: Bot, user: User):
+async def delete_users(
+    message: Message, session: AsyncSession, bot: Bot, user: User
+):
     async with ChatActionSender.typing(bot=bot, chat_id=message.chat.id):
         todo_message = message.reply_to_message
 
         if not todo_message:
             return
 
-        todo = await session.get(Todo, (todo_message.message_id, todo_message.chat.id))
+        todo = await session.get(
+            Todo, (todo_message.message_id, todo_message.chat.id)
+        )
         users = [
-            user for user in await parse_users(message, session) if user in todo.users
+            user
+            for user in await parse_users(message, session)
+            if user in todo.users
         ]
 
         if message.text and "me" in message.text.split():
@@ -91,12 +101,16 @@ async def delete_users(message: Message, session: AsyncSession, bot: Bot, user: 
         await session.commit()
 
         await message.reply(
-            _("Removed {users_count} user(s)").format(users_count=len(res.all()))
+            _("Removed {users_count} user(s)").format(
+                users_count=len(res.all())
+            )
         )
 
 
 @router.message(
-    Command(commands=["todo-for", "todo-user", "todo-users"], commands_prefix="!"),
+    Command(
+        commands=["todo-for", "todo-user", "todo-users"], commands_prefix="!"
+    ),
 )
 async def create_todo_for_user(
     message: Message, session: AsyncSession, bot: Bot, user: User, group: Group
@@ -141,7 +155,7 @@ async def create_todo_for_user(
             )
             await session.commit()
             await message.reply(
-                _("Successfully create a todo for {count_users} user(s)\n").format(
-                    count_users=len(users)
-                )
+                _(
+                    "Successfully create a todo for {count_users} user(s)\n"
+                ).format(count_users=len(users))
             )

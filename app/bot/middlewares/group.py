@@ -52,7 +52,9 @@ class GroupMiddleware(BaseMiddleware):
             photo_size = event.new_chat_photo[-1]
             file = await bot.get_file(photo_size.file_id)
             if file.file_path:
-                await bot.download_file(file.file_path, f"static/{file.file_unique_id}")
+                await bot.download_file(
+                    file.file_path, f"static/{file.file_unique_id}"
+                )
                 group = await self.update_group(
                     session, group.id, {"photo": file.file_unique_id}
                 )

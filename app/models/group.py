@@ -21,7 +21,9 @@ class Group(TimestampMixin, Base):
 class GroupUser(Base):
     __tablename__ = "group_users"
 
-    user_id = sa.Column(sa.ForeignKey("users.id", onupdate="cascade"), primary_key=True)
+    user_id = sa.Column(
+        sa.ForeignKey("users.id", onupdate="cascade"), primary_key=True
+    )
     group_id = sa.Column(
         sa.ForeignKey("groups.id", onupdate="cascade"), primary_key=True
     )

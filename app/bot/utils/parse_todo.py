@@ -26,7 +26,9 @@ def get_or_create_users(
     # create users if its exists in db
     usernames = [user.username for user in users]
     new_users_with_usernames = [
-        User(username=username) for username in mentions if username not in usernames
+        User(username=username)
+        for username in mentions
+        if username not in usernames
     ]
 
     ids = [user.id for user in users]
@@ -44,7 +46,9 @@ def get_or_create_users(
     ]
     session.add_all(new_users_with_usernames)
     session.add_all(new_users_without_usernames)
-    users = list(chain(users, new_users_with_usernames, new_users_without_usernames))
+    users = list(
+        chain(users, new_users_with_usernames, new_users_without_usernames)
+    )
     return users
 
 

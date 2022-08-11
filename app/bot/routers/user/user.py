@@ -16,7 +16,9 @@ router.message.bind_filter(PrivateFilter)
 @router.message(Command(commands=["start"]))
 async def start_command(message: Message, bot: Bot):
     web_app_info = types.WebAppInfo(url=WEB_APP_URL)
-    web_app_button = types.InlineKeyboardButton(text="Todos", web_app=web_app_info)
+    web_app_button = types.InlineKeyboardButton(
+        text="Todos", web_app=web_app_info
+    )
     info_button = types.InlineKeyboardButton(
         text=_("How to use"),
         url=_("https://telegra.ph/How-to-use-TODO-Bot-08-10"),
@@ -35,13 +37,18 @@ async def start_command(message: Message, bot: Bot):
         ]
     )
     await message.answer(
-        _("Hello! I'm a TODO bot. Here are some valuable " "links and a Todos button."),
+        _(
+            "Hello! I'm a TODO bot. Here are some valuable "
+            "links and a Todos button."
+        ),
         reply_markup=keyboard,
     )
 
     await bot.set_chat_menu_button(
         message.chat.id,
-        types.MenuButtonWebApp(type="web_app", text="Todos", web_app=web_app_info),
+        types.MenuButtonWebApp(
+            type="web_app", text="Todos", web_app=web_app_info
+        ),
     )
 
 

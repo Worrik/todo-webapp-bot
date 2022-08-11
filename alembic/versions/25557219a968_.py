@@ -24,7 +24,12 @@ def upgrade() -> None:
         "todos", sa.Column("status_name", sa.String(length=100), nullable=True)
     )
     op.create_foreign_key(
-        None, "todos", "statuses", ["status_name"], ["name"], ondelete="set null"
+        None,
+        "todos",
+        "statuses",
+        ["status_name"],
+        ["name"],
+        ondelete="set null",
     )
     # ### end Alembic commands ###
 
@@ -34,7 +39,8 @@ def downgrade() -> None:
     op.drop_constraint(None, "todos", type_="foreignkey")
     op.drop_column("todos", "status_name")
     op.add_column(
-        "statuses", sa.Column("id", sa.INTEGER(), autoincrement=True, nullable=False)
+        "statuses",
+        sa.Column("id", sa.INTEGER(), autoincrement=True, nullable=False),
     )
     op.drop_constraint(None, "statuses", type_="unique")
     # ### end Alembic commands ###
