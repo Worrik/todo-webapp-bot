@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-08-10 12:52+0300\n"
+"POT-Creation-Date: 2022-08-11 14:14+0300\n"
 "PO-Revision-Date: 2022-07-26 19:01+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -70,6 +70,14 @@ msgstr ""
 
 #: app/bot/routers/group/todo/base.py:151
 msgid "Successfully set status: {status}"
+msgstr ""
+
+#: app/bot/routers/group/todo/base.py:184
+msgid "Successfully set empty additional info"
+msgstr ""
+
+#: app/bot/routers/group/todo/base.py:188
+msgid "Successfully add additional info"
 msgstr ""
 
 #: app/bot/routers/group/todo/users.py:57
