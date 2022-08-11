@@ -29,6 +29,11 @@ class Todo(TimestampMixin, Base):
 
     text = sa.Column(sa.Text)
 
+    additional_info_id = sa.Column(
+        sa.ForeignKey("additional_info.id", ondelete="set null")
+    )
+    additional_info = relationship("AdditionalInfo", back_populates="todo")
+
     __table_args__ = (sa.UniqueConstraint("id", "group_id"),)
 
 
@@ -71,3 +76,15 @@ class Tag(TimestampMixin, Base):
             ["todo_id", "todo_group_id"], ["todos.id", "todos.group_id"]
         ),
     )
+
+
+class AdditionalInfo(TimestampMixin, Base):
+    __tablename__ = "additional_info"
+
+    id = sa.Column(sa.BigInteger, nullable=False, primary_key=True)
+
+    todo = relationship(
+        "Todo", back_populates="additional_info", uselist=False
+    )
+
+    text = sa.Column(sa.Text)

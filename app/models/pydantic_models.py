@@ -18,6 +18,10 @@ class StatusPydantic(OrmModel):
     name: Optional[str]
 
 
+class AdditionalInfoPydantic(OrmModel):
+    text: Optional[str]
+
+
 class UserPydantic(OrmModel):
     id: int
     is_bot: Optional[bool] = None
@@ -42,6 +46,7 @@ class TodoPydantic(OrmModel):
     tags: List[TagPydantic]
     text: str
     status: Optional[StatusPydantic]
+    additional_info: Optional[AdditionalInfoPydantic]
 
 
 class GroupPydantic(OrmModel):

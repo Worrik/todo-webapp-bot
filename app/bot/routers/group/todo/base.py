@@ -12,7 +12,7 @@ from app.bot.filters.reply_todo import TodoReplyFilter
 from app.bot.utils.html_unparse import html_decoration
 from app.bot.utils.parse_todo import parse_tags
 from app.models.group import Group
-from app.models.todo import Status, Tag, Todo
+from app.models.todo import AdditionalInfo, Status, Tag, Todo
 from app.models.user import User
 
 import sqlalchemy as sa
@@ -152,6 +152,40 @@ async def get_or_set_todo_status(
                     status=message_status
                 )
             )
+
+
+@router.message(
+    Command(
+        commands=["additional-info", "additional", "info", "add-info"],
+        commands_prefix="!",
+    ),
+    TodoReplyFilter(),
+)
+async def add_addiotional_info(
+        message: Message, session: AsyncSession, bot: Bot, command: Command
+):
+    async with ChatActionSender.typing(bot=bot, chat_id=message.chat.id):
+        todo_message = message.reply_to_message
+
+        if not todo_message or not message.text:
+            return
+
+        text = message.text.split(maxsplit=1)[-1]
+
+        todo = await session.get(
+            Todo, (todo_message.message_id, todo_message.chat.id)
+        )
+
+        if not text or len(text) == len(message.text):
+            todo.additional_info = None
+            await message.reply(_("Error: the message doesn't have text."))
+        else:
+            addiotional_info = AdditionalInfo(text=text)
+            todo.additional_info = addiotional_info
+            await message.reply(_("Successfully add addiotional info"))
+
+        session.add(todo)
+        await session.commit()
 
 
 @router.edited_message(IsTodoFilter())
