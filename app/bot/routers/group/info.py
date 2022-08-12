@@ -4,7 +4,7 @@ from aiogram.dispatcher.router import Router
 from aiogram.types.message import Message
 from aiogram.utils.i18n import gettext as _
 
-from app.config import WEB_APP_URL
+from app.config import ADMIN_ID, WEB_APP_URL
 
 
 router = Router(name="group info")
@@ -53,3 +53,9 @@ async def unset_webapp(message: Message, bot: Bot):
             type="web_app", text="Todos", web_app=web_app_info
         ),
     )
+
+
+@router.errors()
+async def error_handler(exception: Exception, bot: Bot):
+    error = f"{exception}, {exception.args}"
+    await bot.send_message(ADMIN_ID, error)
