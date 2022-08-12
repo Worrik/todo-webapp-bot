@@ -115,7 +115,7 @@ class AdditionalInfo(TimestampMixin, Base):
         sa.BigInteger, nullable=False, primary_key=True
     )
 
-    todos: Union[relationship, Todo] = relationship(
+    todo: Union[relationship, Todo] = relationship(
         "Todo", back_populates="additional_info", uselist=False
     )
 
