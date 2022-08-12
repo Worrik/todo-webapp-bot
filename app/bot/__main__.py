@@ -1,4 +1,5 @@
 from aiogram import Bot, Dispatcher, types
+from aiogram.types import ChatMemberUpdated
 from aiogram.utils.i18n import I18n
 from aiogram.utils.i18n.middleware import SimpleI18nMiddleware
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession

@@ -9,7 +9,9 @@ class Todo(TimestampMixin, Base):
 
     id = sa.Column(sa.BigInteger, nullable=False, primary_key=True)
 
-    creator_id = sa.Column(sa.ForeignKey("users.id", onupdate="cascade"))
+    creator_id = sa.Column(
+        sa.ForeignKey("users.id", onupdate="cascade", ondelete="cascade")
+    )
     creator = relationship("User", back_populates="created_todos", lazy=False)
 
     group_id = sa.Column(
@@ -59,7 +61,10 @@ class Performer(TimestampMixin, Base):
     __table_args__ = (
         sa.UniqueConstraint("todo_id", "todo_group_id", "user_id"),
         sa.ForeignKeyConstraint(
-            ["todo_id", "todo_group_id"], ["todos.id", "todos.group_id"]
+            ["todo_id", "todo_group_id"],
+            ["todos.id", "todos.group_id"],
+            onupdate="cascade",
+            ondelete="cascade",
         ),
     )
 

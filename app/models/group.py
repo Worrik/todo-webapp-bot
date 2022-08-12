@@ -22,10 +22,12 @@ class GroupUser(Base):
     __tablename__ = "group_users"
 
     user_id = sa.Column(
-        sa.ForeignKey("users.id", onupdate="cascade"), primary_key=True
+        sa.ForeignKey("users.id", onupdate="cascade", ondelete="cascade"),
+        primary_key=True,
     )
     group_id = sa.Column(
-        sa.ForeignKey("groups.id", onupdate="cascade"), primary_key=True
+        sa.ForeignKey("groups.id", onupdate="cascade", ondelete="cascade"),
+        primary_key=True,
     )
 
     __table_args__ = (sa.UniqueConstraint("user_id", "group_id"),)
