@@ -1,0 +1,118 @@
+# Polish translations for PROJECT.
+# Copyright (C) 2022 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2022-08-11 14:14+0300\n"
+"PO-Revision-Date: 2022-08-11 15:31+0300\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: pl\n"
+"Language-Team: pl <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && "
+"(n%100<10 || n%100>=20) ? 1 : 2)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: app/bot/routers/group/info.py:16
+msgid "Chat with bot"
+msgstr "Czat z botem"
+
+#: app/bot/routers/group/info.py:19 app/bot/routers/user/user.py:23
+msgid "How to use"
+msgstr "Jak używać"
+
+#: app/bot/routers/group/info.py:19
+msgid "how_to_use_url"
+msgstr ""
+
+#: app/bot/routers/group/info.py:25 app/bot/routers/user/user.py:58
+msgid ""
+"Commands:\n"
+"<code>!todo</code> - create a todo.\n"
+"<code>!user</code> or <code>!users</code> - add user(s).\n"
+"<code>!tag</code> or <code>!tags</code> - add tag(s).\n"
+"<code>!del</code> or <code>!delete</code> - delete a todo."
+msgstr ""
+"Polecenia:\n"
+"<code>!todo</code> - utwórz zadanie.\n"
+"<code>!user</code> lub <code>!users</code> - dodaj użytkownika(ów).\n"
+"<code>!tag</code> lub <code>!tags</code> — dodaj tag(i).\n"
+"<code>!del</code> lub <code>!delete</code> - usuń zadanie."
+
+#: app/bot/routers/group/todo/base.py:43
+#: app/bot/routers/group/todo/users.py:129
+msgid "Error: the message doesn't have text."
+msgstr "Błąd: wiadomość nie zawiera tekstu"
+
+#: app/bot/routers/group/todo/base.py:57
+#: app/bot/routers/group/todo/users.py:143
+msgid "Already created todo from this message"
+msgstr "Już utworzono zadanie z tej wiadomości"
+
+#: app/bot/routers/group/todo/base.py:60
+msgid ""
+"Successfully create a todo.\n"
+"Now you can add <code>!users</code> or <code>!tags</code> by replying to "
+"a todo message."
+msgstr ""
+"Pomyślnie utwórz zadanie.\n"
+"Teraz możesz dodać <code>!users</code> lub <code>!tags</code>, odpowiadając na wiadomość do zrobienia."
+
+#: app/bot/routers/group/todo/base.py:93
+msgid "Added {tags_count} tag(s)"
+msgstr "Dodano tagi {tags_count}"
+
+#: app/bot/routers/group/todo/base.py:112
+msgid "Successfully deleted this todo"
+msgstr "Pomyślnie usunięto to zadanie"
+
+#: app/bot/routers/group/todo/base.py:137
+msgid "Todo doesn't have the status."
+msgstr "Todo nie ma statusu"
+
+#: app/bot/routers/group/todo/base.py:151
+msgid "Successfully set status: {status}"
+msgstr "Pomyślnie ustawiłeś stan: {status}"
+
+#: app/bot/routers/group/todo/base.py:184
+msgid "Successfully set empty additional info"
+msgstr "Pomyślnie ustawisz puste informacje dodatkowe"
+
+#: app/bot/routers/group/todo/base.py:188
+msgid "Successfully add additional info"
+msgstr "Pomyślnie dodaj dodatkowe informacje"
+
+#: app/bot/routers/group/todo/users.py:57
+msgid "Added {users_count} user(s)"
+msgstr "Dodano {users_count} użytkowników"
+
+#: app/bot/routers/group/todo/users.py:104
+msgid "Removed {users_count} user(s)"
+msgstr "Usunięto {users_count} użytkowników"
+
+#: app/bot/routers/group/todo/users.py:158
+msgid "Successfully create a todo for {count_users} user(s)\n"
+msgstr "Pomyślnie utwórz zadanie dla {count_users} użytkowników"
+
+#: app/bot/routers/user/user.py:24
+msgid "https://telegra.ph/How-to-use-TODO-Bot-08-10"
+msgstr ""
+
+#: app/bot/routers/user/user.py:27
+msgid "Add to group"
+msgstr "Dodaj do grupy"
+
+#: app/bot/routers/user/user.py:31
+msgid "Support"
+msgstr "Wspierać się"
+
+#: app/bot/routers/user/user.py:40
+msgid "Hello! I'm a TODO bot. Here are some valuable links and a Todos button."
+msgstr "Witam! Jestem botem TODO. Oto kilka wartościowych linków i przycisk Todos."
+

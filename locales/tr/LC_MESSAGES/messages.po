@@ -1,0 +1,110 @@
+# Turkish translations for PROJECT.
+# Copyright (C) 2022 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2022-08-11 14:14+0300\n"
+"PO-Revision-Date: 2022-08-11 15:32+0300\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: tr\n"
+"Language-Team: tr <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: app/bot/routers/group/info.py:16
+msgid "Chat with bot"
+msgstr ""
+
+#: app/bot/routers/group/info.py:19 app/bot/routers/user/user.py:23
+msgid "How to use"
+msgstr ""
+
+#: app/bot/routers/group/info.py:19
+msgid "how_to_use_url"
+msgstr ""
+
+#: app/bot/routers/group/info.py:25 app/bot/routers/user/user.py:58
+msgid ""
+"Commands:\n"
+"<code>!todo</code> - create a todo.\n"
+"<code>!user</code> or <code>!users</code> - add user(s).\n"
+"<code>!tag</code> or <code>!tags</code> - add tag(s).\n"
+"<code>!del</code> or <code>!delete</code> - delete a todo."
+msgstr ""
+
+#: app/bot/routers/group/todo/base.py:43
+#: app/bot/routers/group/todo/users.py:129
+msgid "Error: the message doesn't have text."
+msgstr ""
+
+#: app/bot/routers/group/todo/base.py:57
+#: app/bot/routers/group/todo/users.py:143
+msgid "Already created todo from this message"
+msgstr ""
+
+#: app/bot/routers/group/todo/base.py:60
+msgid ""
+"Successfully create a todo.\n"
+"Now you can add <code>!users</code> or <code>!tags</code> by replying to "
+"a todo message."
+msgstr ""
+
+#: app/bot/routers/group/todo/base.py:93
+msgid "Added {tags_count} tag(s)"
+msgstr ""
+
+#: app/bot/routers/group/todo/base.py:112
+msgid "Successfully deleted this todo"
+msgstr ""
+
+#: app/bot/routers/group/todo/base.py:137
+msgid "Todo doesn't have the status."
+msgstr ""
+
+#: app/bot/routers/group/todo/base.py:151
+msgid "Successfully set status: {status}"
+msgstr ""
+
+#: app/bot/routers/group/todo/base.py:184
+msgid "Successfully set empty additional info"
+msgstr ""
+
+#: app/bot/routers/group/todo/base.py:188
+msgid "Successfully add additional info"
+msgstr ""
+
+#: app/bot/routers/group/todo/users.py:57
+msgid "Added {users_count} user(s)"
+msgstr ""
+
+#: app/bot/routers/group/todo/users.py:104
+msgid "Removed {users_count} user(s)"
+msgstr ""
+
+#: app/bot/routers/group/todo/users.py:158
+msgid "Successfully create a todo for {count_users} user(s)\n"
+msgstr ""
+
+#: app/bot/routers/user/user.py:24
+msgid "https://telegra.ph/How-to-use-TODO-Bot-08-10"
+msgstr ""
+
+#: app/bot/routers/user/user.py:27
+msgid "Add to group"
+msgstr ""
+
+#: app/bot/routers/user/user.py:31
+msgid "Support"
+msgstr ""
+
+#: app/bot/routers/user/user.py:40
+msgid "Hello! I'm a TODO bot. Here are some valuable links and a Todos button."
+msgstr ""
+
