@@ -47,6 +47,7 @@ class TodoPydantic(OrmModel):
     text: str
     status: Optional[StatusPydantic]
     additional_info: Optional[AdditionalInfoPydantic]
+    deadline: Optional[datetime]
 
 
 class GroupPydantic(OrmModel):
