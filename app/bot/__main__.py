@@ -6,7 +6,7 @@ from sqlalchemy.orm import sessionmaker
 import asyncio
 
 from app.bot.middlewares.db import DBMiddleware
-from app.config import DATABASE_URL, TOKEN
+from app.config import DATABASE_URL, TOKEN, ADMIN_ID
 from app.bot.middlewares.group import GroupMiddleware
 from app.bot.middlewares.user import UserMiddleware
 from app.bot.routers import group, user
@@ -18,6 +18,11 @@ dp = Dispatcher()
 async def on_startup(bot: Bot):
     commands = [types.BotCommand(command="help", description="Help")]
     await bot.set_my_commands(commands)
+
+
+async def error_handler(exception: Exception, bot: Bot):
+    error = f"{exception}, {exception.args}"
+    await bot.send_message(ADMIN_ID, error)
 
 
 async def main() -> None:
@@ -42,6 +47,7 @@ async def main() -> None:
 
     dp.include_router(user.router)
     dp.include_router(group.router)
+    dp.register_errors
 
     print("Run on_startup")
     await on_startup(bot)
