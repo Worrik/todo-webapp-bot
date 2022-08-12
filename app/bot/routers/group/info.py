@@ -1,9 +1,9 @@
 from aiogram import F, types
+from aiogram.client.bot import Bot
 from aiogram.dispatcher.router import Router
 from aiogram.types.message import Message
 from aiogram.utils.i18n import gettext as _
 from sqlalchemy.ext.asyncio.session import AsyncSession
-from app.models import User
 
 import sqlalchemy as sa
 
@@ -36,9 +36,21 @@ async def command_start_handler(message: Message) -> None:
     )
 
 
+@router.message(F.new_chat_members)
+async def new_chat_members(message: Message, session: AsyncSession):
+    if not message.new_chat_members:
+        return
+
+    group_users = [
+        GroupUser(user_id=user.id, group_id=message.chat.id)
+        for user in message.new_chat_members
+    ]
+    session.add_all(group_users)
+    await session.commit()
+
+
 @router.message(F.left_chat_member)
 async def left_chat_member(message: Message, session: AsyncSession):
-    print(message.left_chat_member)
     if not message.left_chat_member:
         return
 
@@ -53,6 +65,24 @@ async def left_chat_member(message: Message, session: AsyncSession):
 async def new_chat_title(
     message: Message, session: AsyncSession, group: Group
 ):
-    group.title = message.new_chat_title
+    group.title = message.new_chat_title or ""
     session.add(group)
     await session.commit()
+
+
+@router.message(F.new_chat_photo)
+async def new_chat_photo(
+    message: Message, bot: Bot, session: AsyncSession, group: Group
+):
+    if not message.new_chat_photo:
+        return
+
+    photo_size = message.new_chat_photo[-1]
+    file = await bot.get_file(photo_size.file_id)
+    if file.file_path:
+        await bot.download_file(
+            file.file_path, f"static/{file.file_unique_id}"
+        )
+        group.photo = file.file_unique_id
+        session.add(group)
+        await session.commit()
