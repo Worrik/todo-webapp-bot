@@ -47,7 +47,7 @@ async def main() -> None:
 
     dp.include_router(user.router)
     dp.include_router(group.router)
-    dp.register_errors
+    dp.register_errors(error_handler)
 
     print("Run on_startup")
     await on_startup(bot)
