@@ -55,7 +55,7 @@ async def unset_webapp(message: Message, bot: Bot):
     )
 
 
-@router.errors()
+@router.errors_handler()
 async def error_handler(exception: Exception, bot: Bot):
     error = f"{exception}, {exception.args}"
     await bot.send_message(ADMIN_ID, error)
