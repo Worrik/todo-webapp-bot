@@ -20,9 +20,9 @@ async def on_startup(bot: Bot):
     await bot.set_my_commands(commands)
 
 
-async def error_handler(exception: Exception, bot: Bot):
+async def error_handler(exception: Exception):
     error = f"{exception}, {exception.args}"
-    await bot.send_message(ADMIN_ID, error)
+    print(error)
 
 
 async def main() -> None:
