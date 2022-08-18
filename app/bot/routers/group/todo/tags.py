@@ -68,8 +68,8 @@ async def delete_tags(message: Message, session: AsyncSession, bot: Bot):
         q = q.where(
             sa.and_(
                 Tag.name.in_(del_tags),
-                Todo.id == todo.id,
-                Todo.group_id == Todo.group_id,
+                Tag.todo_id == todo.id,
+                Tag.todo_group_id == todo.group_id,
             )
         )
         q = q.returning(Tag.id)
