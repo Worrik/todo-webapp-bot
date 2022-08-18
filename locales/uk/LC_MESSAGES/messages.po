@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-08-11 14:14+0300\n"
+"POT-Creation-Date: 2022-08-18 19:54+0300\n"
 "PO-Revision-Date: 2022-07-26 19:01+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: uk\n"
@@ -19,19 +19,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.10.3\n"
 
-#: app/bot/routers/group/info.py:16
+#: app/bot/routers/group/info.py:19
 msgid "Chat with bot"
 msgstr "Чат з ботом"
 
-#: app/bot/routers/group/info.py:19 app/bot/routers/user/user.py:23
+#: app/bot/routers/group/info.py:22 app/bot/routers/user/user.py:23
 msgid "How to use"
 msgstr "Як користуватись"
 
-#: app/bot/routers/group/info.py:19
+#: app/bot/routers/group/info.py:22
 msgid "how_to_use_url"
 msgstr "https://telegra.ph/YAk-vikoristovuvati-TODO-Bot-08-08"
 
-#: app/bot/routers/group/info.py:25 app/bot/routers/user/user.py:58
+#: app/bot/routers/group/info.py:28 app/bot/routers/user/user.py:58
 msgid ""
 "Commands:\n"
 "<code>!todo</code> - create a todo.\n"
@@ -65,29 +65,33 @@ msgstr ""
 "Тепер можна додати <code>!users</code> або <code>!tags</code> відповівши "
 "на todo повідомлення "
 
-#: app/bot/routers/group/todo/base.py:93
-msgid "Added {tags_count} tag(s)"
-msgstr "Додано {tags_count} тег(-ів)"
-
-#: app/bot/routers/group/todo/base.py:112
+#: app/bot/routers/group/todo/base.py:83
 msgid "Successfully deleted this todo"
 msgstr "Успішно видалено todo"
 
-#: app/bot/routers/group/todo/base.py:137
+#: app/bot/routers/group/todo/base.py:108
 msgid "Todo doesn't have the status."
 msgstr "Todo немає статуса."
 
-#: app/bot/routers/group/todo/base.py:151
+#: app/bot/routers/group/todo/base.py:122
 msgid "Successfully set status: {status}"
 msgstr "Успішно встановлено статус: {status}"
 
-#: app/bot/routers/group/todo/base.py:184
+#: app/bot/routers/group/todo/base.py:157
 msgid "Successfully set empty additional info"
 msgstr "Успішно видалена додаткова інформація"
 
-#: app/bot/routers/group/todo/base.py:188
+#: app/bot/routers/group/todo/base.py:161
 msgid "Successfully add additional info"
 msgstr "Успішно додана додаткова інформація"
+
+#: app/bot/routers/group/todo/tags.py:49
+msgid "Added {tags_count} tag(s)"
+msgstr "Додано {tags_count} тег(-ів)"
+
+#: app/bot/routers/group/todo/tags.py:77
+msgid "Deleted {tags_count} tag(s)"
+msgstr "Видалено {tags_count} тег(-ів)"
 
 #: app/bot/routers/group/todo/users.py:57
 msgid "Added {users_count} user(s)"

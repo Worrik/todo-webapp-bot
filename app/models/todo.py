@@ -98,7 +98,7 @@ class Tag(TimestampMixin, Base):
     todo: Union[relationship, Todo] = relationship(
         "Todo", back_populates="tags"
     )
-    name: Union[sa.Column, str] = sa.Column(sa.String(50))
+    name = sa.Column(sa.String(50))
 
     __table_args__ = (
         sa.UniqueConstraint("todo_id", "name"),

@@ -7,30 +7,30 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-08-11 14:14+0300\n"
+"POT-Creation-Date: 2022-08-18 19:54+0300\n"
 "PO-Revision-Date: 2022-08-11 15:32+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.1\n"
+"Generated-By: Babel 2.10.3\n"
 
-#: app/bot/routers/group/info.py:16
+#: app/bot/routers/group/info.py:19
 msgid "Chat with bot"
 msgstr "Chatten Sie mit dem Bot"
 
-#: app/bot/routers/group/info.py:19 app/bot/routers/user/user.py:23
+#: app/bot/routers/group/info.py:22 app/bot/routers/user/user.py:23
 msgid "How to use"
 msgstr "Wie benutzt man"
 
-#: app/bot/routers/group/info.py:19
+#: app/bot/routers/group/info.py:22
 msgid "how_to_use_url"
 msgstr "https://telegra.ph/How-to-use-TODO-Bot-08-10"
 
-#: app/bot/routers/group/info.py:25 app/bot/routers/user/user.py:58
+#: app/bot/routers/group/info.py:28 app/bot/routers/user/user.py:58
 msgid ""
 "Commands:\n"
 "<code>!todo</code> - create a todo.\n"
@@ -61,32 +61,37 @@ msgid ""
 "a todo message."
 msgstr ""
 "Aufgaben erfolgreich erstellen.\n"
-"Jetzt können Sie <code>!users</code> oder <code>!tags</code> hinzufügen, indem Sie auf antworten"
-"eine Todo-Nachricht."
+"Jetzt können Sie <code>!users</code> oder <code>!tags</code> hinzufügen, "
+"indem Sie auf antworteneine Todo-Nachricht."
 
-#: app/bot/routers/group/todo/base.py:93
-msgid "Added {tags_count} tag(s)"
-msgstr "{tags_count} Tags hinzugefügt"
-
-#: app/bot/routers/group/todo/base.py:112
+#: app/bot/routers/group/todo/base.py:83
 msgid "Successfully deleted this todo"
 msgstr "Diese Aufgabe wurde erfolgreich gelöscht"
 
-#: app/bot/routers/group/todo/base.py:137
+#: app/bot/routers/group/todo/base.py:108
 msgid "Todo doesn't have the status."
 msgstr "Todo hat den Status nicht"
 
-#: app/bot/routers/group/todo/base.py:151
+#: app/bot/routers/group/todo/base.py:122
 msgid "Successfully set status: {status}"
 msgstr "Status erfolgreich gesetzt: {status}"
 
-#: app/bot/routers/group/todo/base.py:184
+#: app/bot/routers/group/todo/base.py:157
 msgid "Successfully set empty additional info"
 msgstr "Leere Zusatzinfo erfolgreich gesetzt"
 
-#: app/bot/routers/group/todo/base.py:188
+#: app/bot/routers/group/todo/base.py:161
 msgid "Successfully add additional info"
 msgstr "Zusätzliche Informationen erfolgreich hinzugefügt"
+
+#: app/bot/routers/group/todo/tags.py:49
+msgid "Added {tags_count} tag(s)"
+msgstr "{tags_count} Tags hinzugefügt"
+
+#: app/bot/routers/group/todo/tags.py:77
+#, fuzzy
+msgid "Deleted {tags_count} tag(s)"
+msgstr "{tags_count} Tags gelöscht"
 
 #: app/bot/routers/group/todo/users.py:57
 msgid "Added {users_count} user(s)"
@@ -114,5 +119,7 @@ msgstr "Die Unterstützung"
 
 #: app/bot/routers/user/user.py:40
 msgid "Hello! I'm a TODO bot. Here are some valuable links and a Todos button."
-msgstr "Hallo! Ich bin ein TODO-Bot. Hier sind einige wertvolle Links und ein Todos-Button."
+msgstr ""
+"Hallo! Ich bin ein TODO-Bot. Hier sind einige wertvolle Links und ein "
+"Todos-Button."
 
