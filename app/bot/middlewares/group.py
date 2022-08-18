@@ -26,7 +26,7 @@ class GroupMiddleware(BaseMiddleware):
         event: Message,
         data: Dict[str, Any],
     ) -> Any:
-        if event.chat.type not in ["group"]:
+        if event.chat.type not in ["group", "supergroup"]:
             return await handler(event, data)
 
         bot: Bot = data["bot"]
