@@ -1,19 +1,14 @@
 from aiogram.client.bot import Bot
 from aiogram.dispatcher.router import Router
 from aiogram.dispatcher.filters import Command
-from aiogram import types
 from aiogram.types import Message
 from aiogram.utils.chat_action import ChatActionSender
 from aiogram.utils.i18n import gettext as _
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.bot.filters.is_todo import IsTodoFilter
 from app.bot.filters.reply_todo import TodoReplyFilter
-from app.bot.utils.html_unparse import html_decoration
 from app.bot.utils.parse_todo import parse_tags
-from app.models.group import Group
-from app.models.todo import AdditionalInfo, Status, Tag, Todo
-from app.models.user import User
+from app.models.todo import Tag, Todo
 
 import sqlalchemy as sa
 
@@ -69,7 +64,14 @@ async def delete_tags(message: Message, session: AsyncSession, bot: Bot):
         )
         tags = [tag.name for tag in todo.tags]
         del_tags = [tag for tag in await parse_tags(message) if tag in tags]
-        q = sa.delete(Tag).where(Tag.name.in_(del_tags))
+        q = sa.delete(Tag)
+        q = q.where(
+            sa.and_(
+                Tag.name.in_(del_tags),
+                Todo.id == todo.id,
+                Todo.group_id == Todo.group_id,
+            )
+        )
         q = q.returning(Tag.id)
         res = await session.execute(q)
         await session.commit()
